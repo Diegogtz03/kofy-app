@@ -63,8 +63,11 @@ En xcode, se selecciona la carpeta de la app y se abren los archivos
 Al tener abierto el proyecto para probarlo selecciona build and run y se ejecutará en el simulador.
 
 *Repositorios*:
+
 Github Front-end: https://github.com/Diegogtz03/kofy-app 
+
 Github Back-end: https://github.com/RoJosGaRis/Kofy-Back 
+
 Jira: https://a01284731.atlassian.net/jira/software/projects/KS/boards/3/backlog 
 
 
