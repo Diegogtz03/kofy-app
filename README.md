@@ -1,12 +1,43 @@
+# KOFY
+Kofy is an AI iOS app for inclusion designed with deaf people in mind to bridge the communication gap with the medical industry.
+
+## Features
+- Transcribe speech to text and vocalize text to speech.
+- Summarize speech sessions using OpenAI's API with doctor's approval of the summary.
+- Scan prescriptions and give summaries of the medicine and possible reminders using Generative AI.
+- Using ML, identifies medical instruments and provides information cards with it's usage in sign language.
+- Reminds users of their medicine intake.
+
+## Possible Improvements
+- Allow users to store full converstations instead of summaries.
+- Allow for summaries to be generated later if network isn't available.
+- Give a tour for first time users.
+- Allow users to verify extracted text from prescriptions before summarizing the data.
 
 
+-----
+## Gallery
+### Splash Screen
+https://github.com/Diegogtz03/kofy-app/assets/65473367/edff1615-62dc-45f2-b952-21d328c3f442
 
+### Registration
+https://github.com/Diegogtz03/kofy-app/assets/65473367/4431e081-a13e-426e-b8ba-585852a2cc48
 
+### New Session
+https://github.com/Diegogtz03/kofy-app/assets/65473367/451511ac-9477-4bc3-a035-b4da39e7ab2d
 
+### Speech Session
+https://github.com/Diegogtz03/kofy-app/assets/65473367/78196c95-5078-43c5-ac49-94855e660fe9
+
+### History Tab
+https://github.com/Diegogtz03/kofy-app/assets/65473367/a9958461-9ca7-434e-a673-8515b3cdaf3e
+
+### Learning Tab
+https://github.com/Diegogtz03/kofy-app/assets/65473367/f422abea-0d8d-4c1e-948a-a7a488f2efae
 
 
 ---------
-
+---------
 
 **Instrucciones para la instalación de la app “KOFY”**
 
