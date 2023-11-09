@@ -31,12 +31,16 @@ struct OverlayModifier<OverlayView: View>: ViewModifier {
 extension View {
     func popup<OverlayView: View>(isPresented: Binding<Bool>,
                                   blurRadius: CGFloat = 3,
+                                  backgroundOpacity: Double? = 1.0,
                                   blurAnimation: Animation? = .linear,
                                   @ViewBuilder overlayView: @escaping () -> OverlayView) -> some View {
         
-        return blur(radius: isPresented.wrappedValue ? blurRadius : 0)
-            .animation(blurAnimation, value: isPresented.wrappedValue)
-            .allowsHitTesting(!isPresented.wrappedValue)
-            .modifier(OverlayModifier(isPresented: isPresented, overlayView: overlayView))
+        return
+            self
+                .blur(radius: isPresented.wrappedValue ? blurRadius : 0)
+                .animation(blurAnimation, value: isPresented.wrappedValue)
+                .opacity(isPresented.wrappedValue ? backgroundOpacity! : 1.0)
+                .allowsHitTesting(!isPresented.wrappedValue)
+                .modifier(OverlayModifier(isPresented: isPresented, overlayView: overlayView))
     }
 }

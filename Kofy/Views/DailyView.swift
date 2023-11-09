@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct DailyView: View {
+    @EnvironmentObject var profileInfo: ProfileViewModel
+    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -20,12 +22,12 @@ struct DailyView: View {
                             .ignoresSafeArea()
                             .frame(maxHeight: 0)
                         HStack {
-                            Text("Hola, Gerardo")
+                            Text("Hola, \(profileInfo.profileInfo.names)")
                                 .font(Font.system(size: 35, weight: .bold))
                                 .foregroundStyle(Color(red: 0.278, green: 0.278, blue: 0.278))
                                 .padding([.leading], 30)
                             Spacer()
-                            Image("cucho")
+                            Image("profile\(profileInfo.profileInfo.profilePicture)")
                                 .resizable()
                                 .scaledToFit()
                                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)

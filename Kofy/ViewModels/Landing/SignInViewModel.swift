@@ -5,9 +5,30 @@
 //  Created by Diego Gutierrez on 17/10/23.
 //
 
+import Combine
 import SwiftUI
 
 class SignInViewModel: ObservableObject {
+    private var cancellables = Set<AnyCancellable>()
+    let userService: UserServiceProtocol
+    
+    init(userService: UserServiceProtocol) {
+        self.userService = userService
+    }
+    
+//    func signIn(email: String, password: String) {
+//        let bodyParams = ["email": email, "password": password]
+//        
+//        userService.login(headers: nil, params: bodyParams)
+//            .receive(on: RunLoop.main)
+//            .sink(receiveCompletion: { data in
+//            
+//        }, receiveValue: {[weak self] data in
+//            self?.users = data
+//        }).store(in: &cancellables)
+//    }
+    
+    
     func verifySignIn(email: String, password: String) async throws {
         let signInData = SignInInformation(email: email, password: password)
         
