@@ -77,17 +77,26 @@ extension HomeView {
             }
             .padding()
             .background(.red)
-            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            .clipShape(Circle())
             .frame(width: .infinity , height: 60)
     }
 }
 
 
 struct HomeView: View {
+    @StateObject var profileInfo = ProfileViewModel(userService: UserService())
+    @EnvironmentObject var authInfo: VerificationViewModel
     @StateObject var historyVM = HistoryContentViewModel()
     @State var popupIsShown = false
+    @State var registerPopupIsShown = false
     @State var selectedTab = 0
     @State var selectedTabTitle = ""
+    
+    // Learn View State Variables
+    @State private var predictionIsShown = false
+    @State private var learnCardsIsShown = false
+    @State private var selectedCardId: Int = -1
+    @State var cardsShown: Bool = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -95,15 +104,19 @@ struct HomeView: View {
                 TabView(selection: $selectedTab) {
                     DailyView()
                         .tag(0)
+                        .environmentObject(profileInfo)
                     
                     HistoryListView(history: historyVM.history)
                         .tag(1)
+                        .environmentObject(profileInfo)
                     
-                    LearnListView()
+                    LearnListView(cardsShown: $cardsShown, selectedCardId: $selectedCardId)
                         .tag(3)
+                        .environmentObject(profileInfo)
                     
                     ProfileView()
                         .tag(4)
+                        .environmentObject(profileInfo)
                 }
                 .ignoresSafeArea(.keyboard, edges: .bottom)
                 
@@ -118,7 +131,7 @@ struct HomeView: View {
                                     if (selectedTabTitle != "Aprende") {
                                         popupIsShown = true
                                     } else {
-                                        print("OPEN CO-ML")
+                                        predictionIsShown = true
                                     }
                                 }
                             } label: {
@@ -137,14 +150,53 @@ struct HomeView: View {
                     .padding([.top], 6)
                 }
                 .background(.ultraThinMaterial)
+                
+                CustomPredictionView(showingView: $predictionIsShown, cardsShown: $cardsShown, selectedCardId: $selectedCardId)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .ignoresSafeArea()
+                
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
-            .frame(width: geometry.size.width)
+            .frame(width: geometry.size.width, height: geometry.size.height)
             .popup(isPresented: $popupIsShown) {
                 BottomPopupView {
                     NewSessionPopupView(popupIsShown: $popupIsShown)
                 }
             }
+            .popup(isPresented: $registerPopupIsShown) {
+                BottomPopupView {
+                    RegistrationPopup(popupIsShown: $registerPopupIsShown)
+                        .environmentObject(authInfo)
+                        .environmentObject(profileInfo)
+                }
+            }
+        }
+        .onAppear {
+            // Get Profile
+            profileInfo.getProfileInfo(popupIsShown: $registerPopupIsShown, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId)
+        }
+    }
+}
+
+struct CustomPredictionView: View {
+    @StateObject private var predictionStatus = PredictionStatus()
+    @Binding var showingView: Bool
+    @Binding var cardsShown: Bool
+    @Binding var selectedCardId: Int
+
+    var body: some View {
+        GeometryReader { geometry in
+            VStack {
+                Spacer()
+                if showingView {
+                    PredictionCameraView(showingView: $showingView, cardsShown: $cardsShown, selectedCardId: $selectedCardId)
+                        .environmentObject(predictionStatus)
+                        .frame(width: geometry.size.width, height: .infinity)
+                        .ignoresSafeArea()
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                }
+            }
+            .animation(.linear, value: showingView)
         }
     }
 }

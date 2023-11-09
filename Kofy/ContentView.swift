@@ -8,32 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var authInfo = VerificationViewModel(userService: UserService())
     @State var splashIsActive: Bool = true;
-    
+
     var body: some View {
-//        SignInView()
-//        SignUpView()
-//        HomeView()
-        SpeechSessionView()
-//        ZStack {
-//            if self.splashIsActive {
-//                SplashView()
-//                    .onTapGesture {
-//                        withAnimation {
-//                            self.splashIsActive = false;
-//                        }
-//                    }
-//            } else {
-//                LandingView()
-//            }
-//        }
-//        .onAppear {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
-//                withAnimation {
-//                    self.splashIsActive = false;
-//                }
-//            }
-//        }
+        ZStack {
+            if self.splashIsActive {
+                SplashView()
+                    .onTapGesture {
+                        withAnimation {
+                            self.splashIsActive = false;
+                        }
+                    }
+            } else {
+                if authInfo.isAuthenticated {
+                    HomeView()
+                        .environmentObject(authInfo)
+                } else {
+                    LandingView()
+                        .environmentObject(authInfo)
+                }
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 8) {
+                withAnimation {
+                    self.splashIsActive = false;
+                }
+            }
+        }
     }
 }
 

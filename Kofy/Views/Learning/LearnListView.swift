@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct LearnListView: View {
+    @EnvironmentObject var profileInfo: ProfileViewModel
+    @Binding var cardsShown: Bool
+    @Binding var selectedCardId: Int
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    
+    func closeCards() {
+        withAnimation {
+            cardsShown.toggle()
+        }
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -27,7 +36,7 @@ struct LearnListView: View {
                                 .foregroundStyle(Color(red: 0.278, green: 0.278, blue: 0.278))
                                 .padding([.leading], 30)
                             Spacer()
-                            Image("cucho")
+                            Image("profile\(profileInfo.profileInfo.profilePicture)")
                                 .resizable()
                                 .scaledToFit()
                                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
@@ -50,6 +59,9 @@ struct LearnListView: View {
                         LazyVGrid(columns: columns, alignment: .center, spacing: 15) {
                             ForEach(0..<4) { _ in
                                 LearnCard()
+                                    .onTapGesture {
+                                        closeCards()
+                                    }
                             }
                         }
                     }
@@ -58,10 +70,13 @@ struct LearnListView: View {
             }
             .ignoresSafeArea(.keyboard)
             .frame(width: geometry.size.width)
+            .popup(isPresented: $cardsShown, backgroundOpacity: 0) {
+                LearnCardsPopup(popupIsShown: $cardsShown)
+            }
         }
     }
 }
 
 #Preview {
-    LearnListView()
+    LearnListView(cardsShown: .constant(false), selectedCardId: .constant(0))
 }

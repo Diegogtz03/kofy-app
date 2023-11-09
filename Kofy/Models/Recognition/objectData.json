@@ -1,0 +1,17 @@
+[
+    {
+        "id": 0,
+        "label": "Inhalador",
+        "image": "learn1"
+    },
+    {
+        "id": 1,
+        "label": "Estetoscopio",
+        "image": "learn2"
+    },
+    {
+        "id": 2,
+        "label": "Jeringa",
+        "image": "learn3"
+    }
+]

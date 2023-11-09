@@ -99,6 +99,7 @@ struct SpeechSessionView: View {
                 }
                 .frame(maxWidth: geometry.size.width)
             }
+            .navigationBarBackButtonHidden()
             .onAppear() {
                 AudioSessionManager.shared.configureRecognitionAudioSession()
                 AudioSessionManager.shared.configurePlaybackAudioSession()

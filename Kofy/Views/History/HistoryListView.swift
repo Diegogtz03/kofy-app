@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct HistoryListView: View {
+    @EnvironmentObject var profileInfo: ProfileViewModel
     @EnvironmentObject var historyVM : HistoryContentViewModel
+    
     var history: [HistoryContentModel]
     var filteredHistory:[HistoryContentModel] {
         history.filter { content in

@@ -9,10 +9,15 @@ import SwiftUI
 import CryptoKit
 
 struct SignUpView: View {
+    @EnvironmentObject var authInfo: VerificationViewModel
     @State private var username: String = ""
     @State private var mail: String = ""
     @State private var password: String = ""
     @Environment(\.dismiss) var dismiss
+    
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -53,6 +58,7 @@ struct SignUpView: View {
                                     .keyboardType(.emailAddress)
                                     .padding()
                                     .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
                             }
                             .frame(height: 60)
                             
@@ -68,15 +74,10 @@ struct SignUpView: View {
                         .frame(width: geometry.size.width * 0.75)
                         
                         Button {
-                            let signUp = SignUpViewModel()
-                            
-                            Task {
-                                let hashedPassword = SHA512.hash(data: Data(password.utf8))
-                                let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
-                                try await signUp.registerSignUpData(username: username, email: mail, password: hashString, type: 0)
-                            }
-                            
-                        
+                            dismissKeyboard()
+                            let hashedPassword = SHA512.hash(data: Data(password.utf8))
+                            let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
+                            authInfo.signUp(username: username, email: mail, password: hashString, type: 0)
                         } label: {
                             Text("Registrarme")
                                 .frame(width: geometry.size.width / 2.5)

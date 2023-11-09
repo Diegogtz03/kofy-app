@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-class SignUpViewModel: ObservableObject{
+class SignUpViewModel: ObservableObject {
     
-    func registerSignUpData(username: String, email: String, password: String, type: Int) async throws{
+    func registerSignUpData(username: String, email: String, password: String, type: Int) async throws {
         print("Entered")
         let signUpData = SignUpInformation(username: username, email: email, password: password, type: type)
         
@@ -24,7 +24,7 @@ class SignUpViewModel: ObservableObject{
         print(signUpData)
         print("Got values")
         
-        let task = URLSession.shared.dataTask(with: request){
+        let task = URLSession.shared.dataTask(with: request) {
             (data, response, error) in
             if let error = error {
                 print(error)

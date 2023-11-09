@@ -106,7 +106,7 @@ class SpeechRecognizer: ObservableObject {
         request.shouldReportPartialResults = true
         
         let audioSession = givenAudioSession
-        try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.mixWithOthers, .defaultToSpeaker])
+        try audioSession.setCategory(.playAndRecord, mode: .default)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         try audioSession.setInputGain(0.5)
         let inputNode = audioEngine.inputNode

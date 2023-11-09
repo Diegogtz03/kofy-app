@@ -20,10 +20,15 @@ extension UINavigationController: UIGestureRecognizerDelegate {
 }
 
 struct SignInView: View {
+    @EnvironmentObject var authInfo: VerificationViewModel
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var btnIsDisabled = false
     @Environment(\.dismiss) var dismiss
+    
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -68,14 +73,12 @@ struct SignInView: View {
                         .frame(width: geometry.size.width * 0.75)
                         
                         Button {
+                            dismissKeyboard()
                             btnIsDisabled.toggle()
-                            let signIn = SignInViewModel()
                             
-                            Task {
-                                let hashedPassword = SHA512.hash(data: Data(password.utf8))
-                                let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
-                                try await signIn.verifySignIn(email: email, password: hashString)
-                            }
+                            let hashedPassword = SHA512.hash(data: Data(password.utf8))
+                            let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
+                            authInfo.login(email: email, password: hashString)
                             
                             btnIsDisabled.toggle()
                         } label: {

@@ -9,11 +9,14 @@ import SwiftUI
 import HealthKit
 
 struct RegistrationPopup: View {
+    @EnvironmentObject var authInfo: VerificationViewModel
+    @EnvironmentObject var profileInfo: ProfileViewModel
     @Environment(\.colorScheme) var colorScheme
+    
     let profilePictureCount = 5
     
     // Personal data state variables
-    @State private var name = ""
+    @State private var names = ""
     @State private var lastNames = ""
     @State private var birthday = Date()
     @State private var gender = "Seleccionar"
@@ -22,8 +25,9 @@ struct RegistrationPopup: View {
     // Medical Stats state variables
     @State private var bloodType = HKCharacteristicTypeIdentifier.bloodType.rawValue
     @State private var height = 120
-    @State private var alergies:[String] = []
-    @State private var alergiesCount = 0
+    @State private var weight: Float = 60.0
+    @State private var allergies:[String] = []
+    @State private var allergiesCount = 0
     @State private var diseases:[String] = []
     @State private var diseasesCount = 0
     
@@ -44,8 +48,6 @@ struct RegistrationPopup: View {
         GeometryReader { geometry in
             NavigationStack {
                 VStack {
-                    Spacer()
-                    
                     VStack {
                         HStack {
                             Text("Tu perfil")
@@ -56,7 +58,7 @@ struct RegistrationPopup: View {
                                 .bold()
                                 .onChange(of: popupIsShown, { oldValue, newValue in
                                     if (!newValue) {
-                                        name = ""
+                                        names = ""
                                     }
                                 })
                             
@@ -103,7 +105,7 @@ struct RegistrationPopup: View {
                             .frame(width: 30, height: 100)
                             
                             HStack {
-                                TextField("Nombre", text: $name, prompt: Text("Nombre").foregroundStyle(.gray))
+                                TextField("Nombres", text: $names, prompt: Text("Nombres").foregroundStyle(.gray))
                                     .foregroundStyle(.black)
                                     .padding()
                                     .background(Color(red: 0.976, green: 0.976, blue: 0.976))
@@ -188,9 +190,10 @@ struct RegistrationPopup: View {
                             .background(Color(red: 0.976, green: 0.976, blue: 0.976))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             
+                            
                             HStack(spacing: 10) {
                                 NavigationLink {
-                                    TagListView(tags:$alergies, tagNum: $alergiesCount, title: "Alergias", inputDescription: "Escribe tu alergia")
+                                    TagListView(tags:$allergies, tagNum: $allergiesCount, title: "Alergias", inputDescription: "Escribe tu alergia")
                                 } label: {
                                     ZStack {
                                         Color(.white)
@@ -200,7 +203,7 @@ struct RegistrationPopup: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .shadow(radius: 3)
                                     .overlay(alignment: .topTrailing, content: {
-                                        NumberOverlay(value: $alergiesCount)
+                                        NumberOverlay(value: $allergiesCount)
                                             .offset(x: 8, y: -8)
                                     })
                                 }
@@ -237,6 +240,14 @@ struct RegistrationPopup: View {
                             // REVISAR INPUTS AQUÍ
                             // GUARDAR PERFIL AQUÍ
                             dismissKeyboard()
+                            
+                            let allergiesFormatted = allergies.map{String($0)}.joined(separator: ",")
+                            let diseasesFormatted = diseases.map{String($0)}.joined(separator: ",")
+                            
+                            let bodyData = ProfileInformation(userId: authInfo.userInfo.userId, names: names, last_names: lastNames, birthday: birthday, gender: gender, profile_picture: profilePicture, blood_type: bloodType, height: height, weight: weight, allergies: allergiesFormatted, diseases: diseasesFormatted)
+                            
+                            profileInfo.setProfileInfo(bodyData: bodyData, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId)
+                            
                             popupIsShown.toggle()
                         } label: {
                             VStack {
@@ -267,5 +278,8 @@ struct RegistrationPopup: View {
 }
 
 #Preview {
-    RegistrationPopup(popupIsShown: .constant(true))
+    ZStack {
+        Color(.red)
+        RegistrationPopup(popupIsShown: .constant(true))
+    }
 }
