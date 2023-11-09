@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LandingView: View {
+    @EnvironmentObject var authInfo: VerificationViewModel
+    
     var body: some View {
         GeometryReader { geometry in
             NavigationStack {
@@ -32,6 +34,7 @@ struct LandingView: View {
                             
                             NavigationLink {
                                 SignInView()
+                                    .environmentObject(authInfo)
                             } label: {
                                 // Login Button
                                 Text("Iniciar Sesión")
@@ -49,6 +52,7 @@ struct LandingView: View {
                             
                             NavigationLink {
                                 SignUpView()
+                                    .environmentObject(authInfo)
                             } label: {
                                 // Sign Up Button
                                 Text("Registrarme")
