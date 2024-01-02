@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct NewDoctorPopupView: View {
+    @EnvironmentObject var authInfo: VerificationViewModel
+    @EnvironmentObject var doctorInfo: DoctorsViewModel
     @Binding var popupIsShown: Bool
+    @Binding var selectedDoctor: Int
     
     // Form Inputs
     @State var doctorName = ""
@@ -18,8 +21,35 @@ struct NewDoctorPopupView: View {
     
     @State var cardSlideOffset = 0
     
+    @State var toast: Toast?
+    
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
+    func validateEmail() -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: doctorEmail)
+    }
+    
+    func checkInputs() -> Bool {
+        if (doctorName == "" || doctorFocus == "") {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Campos vacíos", topOffset: 0)
+            return false
+        }
+        
+        if (doctorPhone != "" && !(doctorPhone.count < 15 && doctorPhone.count >= 10)) {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Teléfono inválido", topOffset: 0)
+            return false
+        }
+        
+        if (doctorEmail != "" && !validateEmail()) {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Correo inválido", topOffset: 0)
+            return false
+        }
+        
+        return true
     }
     
     var body: some View {
@@ -81,19 +111,27 @@ struct NewDoctorPopupView: View {
                             .padding()
                             .background(Color(red: 0.976, green: 0.976, blue: 0.976))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .keyboardType(.numberPad)
                         
                         TextField("Correo", text: $doctorEmail, prompt: Text("Correo").foregroundStyle(.gray))
                             .foregroundStyle(.black)
                             .padding()
                             .background(Color(red: 0.976, green: 0.976, blue: 0.976))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .autocorrectionDisabled()
                     }
                     .padding()
                     
                     Button {
-                        // Registar doctor aquí
                         dismissKeyboard()
-                        popupIsShown.toggle()
+                        
+                        if (checkInputs()) {
+                            let bodyData = newDoctorBody(userId: authInfo.userInfo.userId, doctorName: doctorName, doctorFocus: doctorFocus, doctorPhone: doctorPhone, doctorEmail: doctorEmail)
+                            
+                            doctorInfo.createDoctor(token: authInfo.userInfo.token, userId: authInfo.userInfo.userId, bodyData: bodyData, selectedDoctor: $selectedDoctor, toast: $toast)
+                            
+                            popupIsShown.toggle()
+                        }
                     } label: {
                         VStack {
                             Text("Registrar")
@@ -120,6 +158,7 @@ struct NewDoctorPopupView: View {
                 .clipShape(RoundedCornersShape(radius: 16, corners: [.topLeft, .topRight]))
                 .offset(y: CGFloat(cardSlideOffset))
             }
+            .toastView(toast: $toast)
             .shadow(color: .gray, radius: 15, x: 0,  y: 8)
             .edgesIgnoringSafeArea([.bottom])
             .gesture(
@@ -144,5 +183,5 @@ struct NewDoctorPopupView: View {
 }
 
 #Preview {
-    NewDoctorPopupView(popupIsShown: .constant(true))
+    NewDoctorPopupView(popupIsShown: .constant(true), selectedDoctor: .constant(1))
 }

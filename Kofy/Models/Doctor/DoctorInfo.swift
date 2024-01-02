@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DoctorInfo : Encodable, Identifiable {
+struct DoctorInfo : Encodable, Identifiable, Decodable, Hashable {
     var id : Int
     var doctorName : String
     var doctorFocus : String

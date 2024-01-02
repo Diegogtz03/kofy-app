@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) var modelContext
     @StateObject var authInfo = VerificationViewModel(userService: UserService())
     @State var splashIsActive: Bool = true;
 
@@ -24,6 +25,7 @@ struct ContentView: View {
                 if authInfo.isAuthenticated {
                     HomeView()
                         .environmentObject(authInfo)
+                        .environment(\.modelContext, modelContext)
                 } else {
                     LandingView()
                         .environmentObject(authInfo)

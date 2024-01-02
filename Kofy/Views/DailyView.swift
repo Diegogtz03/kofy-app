@@ -6,9 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DailyView: View {
+    @Environment(\.modelContext) var modelContext
+    @Query var reminders: [RegisteredReminders]
+    @Query var histories: [History]
     @EnvironmentObject var profileInfo: ProfileViewModel
+    
+    @State var confirmationIsShown = false
+    
+    @State var daysSinceLastVisit = 0
+    
+    @Binding var creditScreenIsShown: Bool
     
     var body: some View {
         GeometryReader { geometry in
@@ -33,6 +43,11 @@ struct DailyView: View {
                                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                                 .frame(width: 70)
                                 .padding([.trailing], 10)
+                                .onLongPressGesture {
+                                    withAnimation {
+                                        creditScreenIsShown.toggle()
+                                    }
+                                }
                         }
                         .padding(8)
                         .background(Color(red: 0.85, green: 0.85, blue: 0.85))
@@ -53,7 +68,46 @@ struct DailyView: View {
                             .padding([.leading], 25)
                             .padding([.top], 10)
                         
-                        ReminderListView()
+                        if (reminders.count != 0) {
+                            ScrollView {
+                                VStack {
+                                    ForEach(reminders) { reminder in
+                                        Button {
+                                            confirmationIsShown = true
+                                        } label: {
+                                            ReminderButtonContent(reminder: ReminderResult(drugName: reminder.reminder.drugName, dosis: reminder.reminder.dosis, everyXHours: reminder.reminder.everyXHours), isDeletion: true)
+                                        }
+                                        .confirmationDialog("¿Deseas eliminar el recordatorio?", isPresented: $confirmationIsShown) {
+                                            Button("Eliminar", role: .destructive) {
+                                                NotificationManager.shared.deleteNotification(with: reminder.identifier)
+                                                modelContext.delete(reminder)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            .padding([.leading, .trailing])
+                        } else {
+                            VStack(alignment: .leading) {
+                                HStack(spacing: 10) {
+                                    Image(systemName: "bell.fill")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .bold()
+                                        .foregroundColor(.gray)
+                                        .frame(width: 30)
+                                    Text("No hay recordatorios")
+                                        .bold()
+                                        .font(Font.system(.title2))
+                                }
+                                .padding()
+                                .padding([.leading, .trailing])
+                                .background(.thinMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            .frame(width: geometry.size.width)
+//                            .padding([.leading], 25)
+                        }
                     }
                     
                     VStack {
@@ -64,13 +118,41 @@ struct DailyView: View {
                     .padding([.top, .bottom], 10)
                     
                     VStack {
-                        Text("Kofy")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding([.leading], 25)
-                            .font(Font.system(size: 32, weight: .bold))
+//                        Text("Kofy")
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                            .padding([.leading], 25)
+//                            .font(Font.system(size: 32, weight: .bold))
+                        
+                        if (histories.count == 0) {
+                            VStack {
+                                Image("notFound")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 200)
+                                Text("No hay registros actualmente")
+                                    .bold()
+                                    .font(Font.system(.title2))
+                            }
+                        } else {
+                            VStack {
+                                Text(String(daysSinceLastVisit) + (daysSinceLastVisit == 1 ? " día" : " días"))
+                                    .font(Font.custom("ZenTokyoZoo-Regular", size: 75))
+                                    .foregroundStyle(.white)
+                                    .onAppear {
+                                        let dateFormatter = DateFormatter()
+                                        dateFormatter.dateFormat = "yyyy-MM-dd"
+                                        let sessionDate = dateFormatter.date(from:histories.last!.sessionDate)
+                                        let calendar = Calendar.current
+                                        let components = calendar.dateComponents([.day], from: sessionDate ?? Date(), to: Date())
+                                        daysSinceLastVisit = components.day ?? 0
+                                    }
+                                Text("Desde la última sesión")
+                                    .bold()
+                                    .font(Font.system(.title))
+                            }
+                        }
                         
                         Spacer()
-                        
                     }
                 }
             }
@@ -82,5 +164,5 @@ struct DailyView: View {
 }
 
 #Preview {
-    DailyView()
+    DailyView(creditScreenIsShown: .constant(true))
 }

@@ -84,11 +84,16 @@ extension HomeView {
 
 
 struct HomeView: View {
+    @Environment(\.modelContext) var modelContext
+    
     @StateObject var profileInfo = ProfileViewModel(userService: UserService())
+    @StateObject var sessionInfo = SummariesViewModel(userService: UserService())
     @EnvironmentObject var authInfo: VerificationViewModel
+    @StateObject var doctorInfo = DoctorsViewModel(userService: UserService())
     @StateObject var historyVM = HistoryContentViewModel()
     @State var popupIsShown = false
     @State var registerPopupIsShown = false
+    @State var profileUpdatePopupIsShown = false
     @State var selectedTab = 0
     @State var selectedTabTitle = ""
     
@@ -96,84 +101,129 @@ struct HomeView: View {
     @State private var predictionIsShown = false
     @State private var learnCardsIsShown = false
     @State private var selectedCardId: Int = -1
+    @State private var selectedCardTitle: String = ""
+    @State private var selectedCardIcon: String = ""
     @State var cardsShown: Bool = false
+    
+    @State var prescriptionResultsShown = false
+    @State var historyViewIsShown = false
+    @State var historyDisabledTouch = false
+    
+    @State var creditScreenIsShown = false
     
     var body: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .bottom) {
-                TabView(selection: $selectedTab) {
-                    DailyView()
-                        .tag(0)
-                        .environmentObject(profileInfo)
-                    
-                    HistoryListView(history: historyVM.history)
-                        .tag(1)
-                        .environmentObject(profileInfo)
-                    
-                    LearnListView(cardsShown: $cardsShown, selectedCardId: $selectedCardId)
-                        .tag(3)
-                        .environmentObject(profileInfo)
-                    
-                    ProfileView()
-                        .tag(4)
-                        .environmentObject(profileInfo)
-                }
-                .ignoresSafeArea(.keyboard, edges: .bottom)
-                
-                ZStack {
-                    HStack(spacing: 31) {
-                        ForEach((TabItems.allCases), id: \.self) { item in
-                            Button {
-                                if (item.title != "add") {
-                                    selectedTabTitle = item.title
-                                    selectedTab = item.rawValue
-                                } else {
-                                    if (selectedTabTitle != "Aprende") {
-                                        popupIsShown = true
-                                    } else {
-                                        predictionIsShown = true
+            if (!creditScreenIsShown) {
+                NavigationStack {
+                    ZStack(alignment: .bottom) {
+                        TabView(selection: $selectedTab) {
+                            DailyView(creditScreenIsShown: $creditScreenIsShown)
+                                .tag(0)
+                                .environmentObject(profileInfo)
+                                .environment(\.modelContext, modelContext)
+                            
+                            HistoryListView(prescriptionViewIsShown: $prescriptionResultsShown, shown: $historyViewIsShown, disabledTouch: $historyDisabledTouch)
+                                .tag(1)
+                                .environmentObject(authInfo)
+                                .environmentObject(sessionInfo)
+                                .environmentObject(profileInfo)
+                                .environment(\.modelContext, modelContext)
+                            
+                            LearnListView(cardsShown: $cardsShown, selectedCardId: $selectedCardId, cardCollectionName: $selectedCardTitle, cardCollectionIconLink: $selectedCardIcon)
+                                .tag(3)
+                                .environmentObject(authInfo)
+                            
+                            ProfileView(updatePopupIsShown: $profileUpdatePopupIsShown)
+                                .tag(4)
+                                .environmentObject(profileInfo)
+                                .environmentObject(doctorInfo)
+                        }
+                        .ignoresSafeArea(.keyboard, edges: .bottom)
+                        
+                        ZStack {
+                            HStack(spacing: 31) {
+                                ForEach((TabItems.allCases), id: \.self) { item in
+                                    Button {
+                                        if (item.title != "add") {
+                                            historyViewIsShown = false
+                                            historyDisabledTouch = false
+                                            selectedTabTitle = item.title
+                                            selectedTab = item.rawValue
+                                        } else {
+                                            if (selectedTabTitle != "Aprende") {
+                                                popupIsShown = true
+                                            } else {
+                                                predictionIsShown = true
+                                            }
+                                        }
+                                    } label: {
+                                        if (item.title != "add") {
+                                            CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                                        } else {
+                                            CustomAddButton(imageName: (selectedTabTitle != "Aprende") ? item.iconName : "camera", title: item.title, isActive: (selectedTab == item.rawValue))
+                                        }
+                                    }
+                                    .sensoryFeedback(trigger: popupIsShown) { oldValue, newValue in
+                                        return .impact(flexibility: .solid, intensity: 0.5)
                                     }
                                 }
-                            } label: {
-                                if (item.title != "add") {
-                                    CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
-                                } else {
-                                    CustomAddButton(imageName: (selectedTabTitle != "Aprende") ? item.iconName : "camera", title: item.title, isActive: (selectedTab == item.rawValue))
-                                }
                             }
-                            .sensoryFeedback(trigger: popupIsShown) { oldValue, newValue in
-                                return .impact(flexibility: .solid, intensity: 0.5)
-                            }
+                            .frame(width: geometry.size.width)
+                            .padding([.top], 6)
+                        }
+                        .background(.ultraThinMaterial)
+                        
+                        CustomPredictionView(showingView: $predictionIsShown, cardsShown: $cardsShown, selectedCardId: $selectedCardId, selectedCardTitle: $selectedCardTitle, selectedCardIcon: $selectedCardIcon)
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .ignoresSafeArea()
+                        
+                    }
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .navigationDestination(isPresented: $prescriptionResultsShown) {
+                        PrescriptionResultsView(prescriptionIsShown: $prescriptionResultsShown)
+                            .environmentObject(sessionInfo)
+                            .environment(\.modelContext, modelContext)
+                            .frame(height: .infinity)
+                    }
+                    .popup(isPresented: $popupIsShown) {
+                        BottomPopupView {
+                            NewSessionPopupView(popupIsShown: $popupIsShown, prescriptionIsShown: $prescriptionResultsShown)
+                                .environmentObject(doctorInfo)
+                                .environmentObject(authInfo)
+                                .environmentObject(sessionInfo)
+                                .environmentObject(profileInfo)
+                                .environment(\.modelContext, modelContext)
                         }
                     }
-                    .frame(width: geometry.size.width)
-                    .padding([.top], 6)
+                    .popup(isPresented: $registerPopupIsShown) {
+                        BottomPopupView {
+                            RegistrationPopup(isUpdating: false, popupIsShown: $registerPopupIsShown)
+                                .environmentObject(authInfo)
+                                .environmentObject(profileInfo)
+                        }
+                    }
+                    .popup(isPresented: $profileUpdatePopupIsShown) {
+                        BottomPopupView {
+                            RegistrationPopup(isUpdating: true, popupIsShown: $profileUpdatePopupIsShown)
+                                .environmentObject(profileInfo)
+                        }
+                    }
                 }
-                .background(.ultraThinMaterial)
-                
-                CustomPredictionView(showingView: $predictionIsShown, cardsShown: $cardsShown, selectedCardId: $selectedCardId)
-                    .frame(width: geometry.size.width, height: geometry.size.height)
-                    .ignoresSafeArea()
-                
-            }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
-            .frame(width: geometry.size.width, height: geometry.size.height)
-            .popup(isPresented: $popupIsShown) {
-                BottomPopupView {
-                    NewSessionPopupView(popupIsShown: $popupIsShown)
+                .frame(width: geometry.size.width, height: geometry.size.height)
+                .ignoresSafeArea(.keyboard, edges: [.bottom, .top])
+                .onAppear {
+                    // Get Profile
+                    profileInfo.getProfileInfo(popupIsShown: $registerPopupIsShown, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId)
+                    doctorInfo.getDoctors(token: authInfo.userInfo.token, userId: authInfo.userInfo.userId)
+                    
+                    sessionInfo.updateModelContext(modelContext: modelContext)
+                    
+                    NotificationManager.shared.removeExpiredNotifications()
                 }
+            } else {
+                CreditsView(isShown: $creditScreenIsShown)
             }
-            .popup(isPresented: $registerPopupIsShown) {
-                BottomPopupView {
-                    RegistrationPopup(popupIsShown: $registerPopupIsShown)
-                        .environmentObject(authInfo)
-                        .environmentObject(profileInfo)
-                }
-            }
-        }
-        .onAppear {
-            // Get Profile
-            profileInfo.getProfileInfo(popupIsShown: $registerPopupIsShown, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId)
         }
     }
 }
@@ -183,13 +233,15 @@ struct CustomPredictionView: View {
     @Binding var showingView: Bool
     @Binding var cardsShown: Bool
     @Binding var selectedCardId: Int
+    @Binding var selectedCardTitle: String
+    @Binding var selectedCardIcon: String
 
     var body: some View {
         GeometryReader { geometry in
             VStack {
                 Spacer()
                 if showingView {
-                    PredictionCameraView(showingView: $showingView, cardsShown: $cardsShown, selectedCardId: $selectedCardId)
+                    PredictionCameraView(showingView: $showingView, cardsShown: $cardsShown, selectedCardId: $selectedCardId, selectedTitle: $selectedCardTitle, selectedImage: $selectedCardIcon)
                         .environmentObject(predictionStatus)
                         .frame(width: geometry.size.width, height: .infinity)
                         .ignoresSafeArea()
@@ -201,6 +253,6 @@ struct CustomPredictionView: View {
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}

@@ -41,19 +41,36 @@ class ProfileViewModel: ObservableObject {
     }
     
     
-    func setProfileInfo(bodyData: ProfileInformation, token: String, userId: Int) {
-        userService.getProfile(headers: ["Authorization": "Bearer \(token)"], params: bodyData)
+    func setProfileInfo(bodyData: ProfileInformation, token: String, userId: Int, toast: Binding<Toast?>, popupIsShown: Binding<Bool>) {
+        userService.setProfile(headers: ["Authorization": "Bearer \(token)"], params: bodyData)
             .receive(on: RunLoop.main)
             .sink(receiveCompletion: { data in
                 switch data {
                     case .finished:
                         break
                     case .failure:
-                        print("ERROR, REGISTERING PROFILE INFO")
+                        toast.wrappedValue = Toast(style: .error, appearPosition: .bottom, message: "Error registrando perfil", topOffset: -40)
                 }
         }, receiveValue: {[weak self] data in
             self?.profileInfo = data;
             self?.isNewUser = false;
+            popupIsShown.wrappedValue.toggle()
+        }).store(in: &cancellables)
+    }
+    
+    func updateProfileInfo(bodyData: ProfileInformation, token: String, userId: Int, toast: Binding<Toast?>, popupIsShown: Binding<Bool>) {
+        userService.updateProfile(headers: ["Authorization": "Bearer \(token)"], params: bodyData)
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { data in
+                switch data {
+                    case .finished:
+                        break
+                    case .failure:
+                        toast.wrappedValue = Toast(style: .error, appearPosition: .bottom, message: "Error actualizando perfil", topOffset: -40)
+                }
+        }, receiveValue: {[weak self] data in
+            self?.profileInfo = data;
+            popupIsShown.wrappedValue.toggle()
         }).store(in: &cancellables)
     }
 }

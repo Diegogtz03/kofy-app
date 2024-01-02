@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5609B7492B089FBC00B3A9BA /* ScanDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609B7482B089FBC00B3A9BA /* ScanDocumentView.swift */; };
+		5609B74C2B08A1FB00B3A9BA /* PrescriptionPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609B74B2B08A1FB00B3A9BA /* PrescriptionPreviewView.swift */; };
+		5609B7512B0E856F00B3A9BA /* NewSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609B7502B0E856F00B3A9BA /* NewSessionModel.swift */; };
+		5609B7552B0EB56600B3A9BA /* Kofy.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5609B7542B0EB56600B3A9BA /* Kofy.mlmodel */; };
+		5609B7572B0EBF2200B3A9BA /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5609B7562B0EBF2200B3A9BA /* DataManager.swift */; };
 		561ED3972AF5A87800B95849 /* TokenVerificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561ED3962AF5A87800B95849 /* TokenVerificationModel.swift */; };
 		56267EC02AD46BA400A39AB7 /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56267EBF2AD46BA400A39AB7 /* HistoryListView.swift */; };
 		56267EC22AD7428200A39AB7 /* DailyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56267EC12AD7428200A39AB7 /* DailyView.swift */; };
@@ -27,19 +32,21 @@
 		56267EEC2ADF057000A39AB7 /* SignInModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56267EEB2ADF056F00A39AB7 /* SignInModel.swift */; };
 		56267EEE2ADF057B00A39AB7 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56267EED2ADF057B00A39AB7 /* SignInViewModel.swift */; };
 		56267EF52AE0531400A39AB7 /* RegistrationPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56267EF42AE0531400A39AB7 /* RegistrationPopup.swift */; };
+		565355A92B2AB724009AEB71 /* notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = 565355A82B2AB724009AEB71 /* notification.wav */; };
 		565724AC2AE0A033000FB2ED /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565724AB2AE0A033000FB2ED /* AudioSessionManager.swift */; };
 		565724AF2AE9DBD6000FB2ED /* BigUIPaging in Frameworks */ = {isa = PBXBuildFile; productRef = 565724AE2AE9DBD6000FB2ED /* BigUIPaging */; };
 		565724B12AE9E168000FB2ED /* LearnCardsPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565724B02AE9E167000FB2ED /* LearnCardsPopup.swift */; };
 		565724B42AE9E81E000FB2ED /* LearnCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565724B32AE9E81E000FB2ED /* LearnCardContent.swift */; };
-		565724B72AE9F230000FB2ED /* LearnCardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 565724B62AE9F230000FB2ED /* LearnCardsViewModel.swift */; };
 		565724BA2AEA1A25000FB2ED /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 565724B92AEA1A25000FB2ED /* YouTubePlayerKit */; };
+		56863C1C2B166F0B0006CA45 /* ReminderButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56863C1B2B166F0B0006CA45 /* ReminderButtonContent.swift */; };
+		56A7032C2B16DBDB00E76801 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7032B2B16DBDB00E76801 /* NotificationManager.swift */; };
+		56A7032E2B16DD1300E76801 /* ReminderConfirmationPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A7032D2B16DD1300E76801 /* ReminderConfirmationPopupView.swift */; };
 		56AF46732AECDCEB0015970E /* CustomInputStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46722AECDCEB0015970E /* CustomInputStepper.swift */; };
 		56AF46752AEDD9340015970E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46742AEDD9340015970E /* ImagePicker.swift */; };
 		56AF46772AEDE23E0015970E /* NumberOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46762AEDE23E0015970E /* NumberOverlay.swift */; };
 		56AF467A2AEE27C20015970E /* IndividualTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46792AEE27C20015970E /* IndividualTag.swift */; };
 		56AF467D2AEE27FE0015970E /* TagListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF467C2AEE27FE0015970E /* TagListView.swift */; };
 		56AF46852AEEF47C0015970E /* ProfileInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46842AEEF47C0015970E /* ProfileInformation.swift */; };
-		56AF46872AEEF8220015970E /* ProfileEditPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46862AEEF8220015970E /* ProfileEditPopup.swift */; };
 		56AF468A2AEF305E0015970E /* DoctorInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46892AEF305E0015970E /* DoctorInfo.swift */; };
 		56AF468D2AEF30CB0015970E /* DoctorsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF468C2AEF30CB0015970E /* DoctorsViewModel.swift */; };
 		56AF46922AEF39EB0015970E /* Classification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46912AEF39EB0015970E /* Classification.swift */; };
@@ -51,12 +58,14 @@
 		56AF46AA2AF0A8140015970E /* PredictionCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46A92AF0A8140015970E /* PredictionCameraView.swift */; };
 		56AF46AF2AF0A88E0015970E /* LiveCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46AD2AF0A88E0015970E /* LiveCameraViewController.swift */; };
 		56AF46B02AF0A88E0015970E /* LiveCameraRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46AE2AF0A88E0015970E /* LiveCameraRepresentable.swift */; };
-		56AF46B22AF0A8D40015970E /* Kofy.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46B12AF0A8D40015970E /* Kofy.mlmodel */; };
 		56AF46B42AF0A8FD0015970E /* PredictionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46B32AF0A8FD0015970E /* PredictionStatus.swift */; };
 		56AF46B62AF0A97E0015970E /* ClassifierViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46B52AF0A97E0015970E /* ClassifierViewModel.swift */; };
 		56AF46BB2AF0AA120015970E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46B92AF0AA120015970E /* Constants.swift */; };
 		56AF46BC2AF0AA120015970E /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46BA2AF0AA120015970E /* Helpers.swift */; };
 		56AF46BF2AF181810015970E /* PrescriptionResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AF46BE2AF181810015970E /* PrescriptionResultsView.swift */; };
+		56BD14852B181E2F0066A1F6 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BD14842B181E2F0066A1F6 /* Toast.swift */; };
+		56BD148F2B1D4C7E0066A1F6 /* QuickSignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BD148E2B1D4C7E0066A1F6 /* QuickSignInWithApple.swift */; };
+		56BD14962B2A956C0066A1F6 /* CreditsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BD14952B2A956C0066A1F6 /* CreditsView.swift */; };
 		56CB6F482ACC9350008750FD /* KofyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB6F472ACC9350008750FD /* KofyApp.swift */; };
 		56CB6F4A2ACC9350008750FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB6F492ACC9350008750FD /* ContentView.swift */; };
 		56CB6F4C2ACC9351008750FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56CB6F4B2ACC9351008750FD /* Assets.xcassets */; };
@@ -69,6 +78,10 @@
 		56CB6F8A2ACE2C53008750FD /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB6F892ACE2C53008750FD /* SignInView.swift */; };
 		56CB6F8C2ACE2F0D008750FD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB6F8B2ACE2F0D008750FD /* HomeView.swift */; };
 		56CB6F902ACE38B5008750FD /* ReminderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB6F8F2ACE38B5008750FD /* ReminderListView.swift */; };
+		56D4A5AB2B03103200662FAB /* LearningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D4A5AA2B03103200662FAB /* LearningViewModel.swift */; };
+		56D4A5AD2B03111900662FAB /* CardCollectionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D4A5AC2B03111900662FAB /* CardCollectionInfo.swift */; };
+		56D4A5B62B06E3EC00662FAB /* DoctorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D4A5B52B06E3EC00662FAB /* DoctorView.swift */; };
+		56D4A5B92B07E92600662FAB /* SummariesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D4A5B82B07E92600662FAB /* SummariesViewModel.swift */; };
 		56F2F95A2AF2EC8600FF4F75 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F2F9592AF2EC8600FF4F75 /* ProfileViewModel.swift */; };
 		56F2F95D2AF3544000FF4F75 /* WebServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56F2F95C2AF3544000FF4F75 /* WebServices.swift */; };
 		FBF5D0A32AD9C33900B1F418 /* SignUpModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5D0A22AD9C33900B1F418 /* SignUpModel.swift */; };
@@ -76,6 +89,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5609B7482B089FBC00B3A9BA /* ScanDocumentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentView.swift; sourceTree = "<group>"; };
+		5609B74B2B08A1FB00B3A9BA /* PrescriptionPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionPreviewView.swift; sourceTree = "<group>"; };
+		5609B7502B0E856F00B3A9BA /* NewSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionModel.swift; sourceTree = "<group>"; };
+		5609B7542B0EB56600B3A9BA /* Kofy.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Kofy.mlmodel; sourceTree = "<group>"; };
+		5609B7562B0EBF2200B3A9BA /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		561ED3962AF5A87800B95849 /* TokenVerificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenVerificationModel.swift; sourceTree = "<group>"; };
 		56267EBF2AD46BA400A39AB7 /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
 		56267EC12AD7428200A39AB7 /* DailyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyView.swift; sourceTree = "<group>"; };
@@ -96,17 +114,19 @@
 		56267EEB2ADF056F00A39AB7 /* SignInModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInModel.swift; sourceTree = "<group>"; };
 		56267EED2ADF057B00A39AB7 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		56267EF42AE0531400A39AB7 /* RegistrationPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPopup.swift; sourceTree = "<group>"; };
+		565355A82B2AB724009AEB71 /* notification.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = notification.wav; sourceTree = "<group>"; };
 		565724AB2AE0A033000FB2ED /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		565724B02AE9E167000FB2ED /* LearnCardsPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnCardsPopup.swift; sourceTree = "<group>"; };
 		565724B32AE9E81E000FB2ED /* LearnCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnCardContent.swift; sourceTree = "<group>"; };
-		565724B62AE9F230000FB2ED /* LearnCardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnCardsViewModel.swift; sourceTree = "<group>"; };
+		56863C1B2B166F0B0006CA45 /* ReminderButtonContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderButtonContent.swift; sourceTree = "<group>"; };
+		56A7032B2B16DBDB00E76801 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		56A7032D2B16DD1300E76801 /* ReminderConfirmationPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderConfirmationPopupView.swift; sourceTree = "<group>"; };
 		56AF46722AECDCEB0015970E /* CustomInputStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputStepper.swift; sourceTree = "<group>"; };
 		56AF46742AEDD9340015970E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		56AF46762AEDE23E0015970E /* NumberOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberOverlay.swift; sourceTree = "<group>"; };
 		56AF46792AEE27C20015970E /* IndividualTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndividualTag.swift; sourceTree = "<group>"; };
 		56AF467C2AEE27FE0015970E /* TagListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagListView.swift; sourceTree = "<group>"; };
 		56AF46842AEEF47C0015970E /* ProfileInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInformation.swift; sourceTree = "<group>"; };
-		56AF46862AEEF8220015970E /* ProfileEditPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditPopup.swift; sourceTree = "<group>"; };
 		56AF46892AEF305E0015970E /* DoctorInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorInfo.swift; sourceTree = "<group>"; };
 		56AF468C2AEF30CB0015970E /* DoctorsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorsViewModel.swift; sourceTree = "<group>"; };
 		56AF46912AEF39EB0015970E /* Classification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classification.swift; sourceTree = "<group>"; };
@@ -118,12 +138,15 @@
 		56AF46A92AF0A8140015970E /* PredictionCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionCameraView.swift; sourceTree = "<group>"; };
 		56AF46AD2AF0A88E0015970E /* LiveCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveCameraViewController.swift; sourceTree = "<group>"; };
 		56AF46AE2AF0A88E0015970E /* LiveCameraRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveCameraRepresentable.swift; sourceTree = "<group>"; };
-		56AF46B12AF0A8D40015970E /* Kofy.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Kofy.mlmodel; sourceTree = "<group>"; };
 		56AF46B32AF0A8FD0015970E /* PredictionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionStatus.swift; sourceTree = "<group>"; };
 		56AF46B52AF0A97E0015970E /* ClassifierViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassifierViewModel.swift; sourceTree = "<group>"; };
 		56AF46B92AF0AA120015970E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		56AF46BA2AF0AA120015970E /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		56AF46BE2AF181810015970E /* PrescriptionResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrescriptionResultsView.swift; sourceTree = "<group>"; };
+		56BD14842B181E2F0066A1F6 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		56BD14862B1841EA0066A1F6 /* Kofy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kofy.entitlements; sourceTree = "<group>"; };
+		56BD148E2B1D4C7E0066A1F6 /* QuickSignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSignInWithApple.swift; sourceTree = "<group>"; };
+		56BD14952B2A956C0066A1F6 /* CreditsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsView.swift; sourceTree = "<group>"; };
 		56CB6F442ACC9350008750FD /* Kofy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kofy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56CB6F472ACC9350008750FD /* KofyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KofyApp.swift; sourceTree = "<group>"; };
 		56CB6F492ACC9350008750FD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -138,6 +161,10 @@
 		56CB6F892ACE2C53008750FD /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		56CB6F8B2ACE2F0D008750FD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		56CB6F8F2ACE38B5008750FD /* ReminderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListView.swift; sourceTree = "<group>"; };
+		56D4A5AA2B03103200662FAB /* LearningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningViewModel.swift; sourceTree = "<group>"; };
+		56D4A5AC2B03111900662FAB /* CardCollectionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionInfo.swift; sourceTree = "<group>"; };
+		56D4A5B52B06E3EC00662FAB /* DoctorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoctorView.swift; sourceTree = "<group>"; };
+		56D4A5B82B07E92600662FAB /* SummariesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummariesViewModel.swift; sourceTree = "<group>"; };
 		56F2F9592AF2EC8600FF4F75 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		56F2F95C2AF3544000FF4F75 /* WebServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServices.swift; sourceTree = "<group>"; };
 		FBF5D0A22AD9C33900B1F418 /* SignUpModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModel.swift; sourceTree = "<group>"; };
@@ -157,9 +184,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5609B74A2B08A1E200B3A9BA /* Prescription */ = {
+			isa = PBXGroup;
+			children = (
+				5609B74B2B08A1FB00B3A9BA /* PrescriptionPreviewView.swift */,
+			);
+			path = Prescription;
+			sourceTree = "<group>";
+		};
+		5609B74F2B0E854000B3A9BA /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				5609B7502B0E856F00B3A9BA /* NewSessionModel.swift */,
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
 		56267EC62AD74B1000A39AB7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5609B74F2B0E854000B3A9BA /* Sessions */,
 				56AF46A12AF055340015970E /* Verification */,
 				56AF468E2AEF37E30015970E /* Recognition */,
 				56AF46882AEF304F0015970E /* Doctor */,
@@ -170,6 +214,7 @@
 				56267EC72AD74B2500A39AB7 /* SpeechRecognizer.swift */,
 				56267ED52AD87EE400A39AB7 /* TextToSpeech.swift */,
 				565724AB2AE0A033000FB2ED /* AudioSessionManager.swift */,
+				5609B7482B089FBC00B3A9BA /* ScanDocumentView.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -177,6 +222,7 @@
 		56267EDB2ADB6ECA00A39AB7 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				56D4A5B72B07E90700662FAB /* Summaries */,
 				56F2F9582AF2EC7000FF4F75 /* Profile */,
 				56AF469E2AF054A50015970E /* Verification */,
 				56AF468B2AEF30BB0015970E /* Doctor */,
@@ -190,6 +236,7 @@
 		56267EE42ADDD26A00A39AB7 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				56BD14832B181E200066A1F6 /* Toast */,
 				56AF469B2AF042F50015970E /* Recognition */,
 				56AF46782AEE27A50015970E /* Tags */,
 				56267EE52ADDD37000A39AB7 /* HistoryCard.swift */,
@@ -208,6 +255,7 @@
 				56CB6F632ACD23CC008750FD /* LandingView.swift */,
 				56CB6F892ACE2C53008750FD /* SignInView.swift */,
 				56CB6F872ACE2810008750FD /* SignUpView.swift */,
+				56BD148E2B1D4C7E0066A1F6 /* QuickSignInWithApple.swift */,
 			);
 			path = Landing;
 			sourceTree = "<group>";
@@ -230,7 +278,7 @@
 				56267ED32AD7720D00A39AB7 /* BottomPopupView.swift */,
 				56267ED12AD771B200A39AB7 /* PopupModifier.swift */,
 				565724B02AE9E167000FB2ED /* LearnCardsPopup.swift */,
-				56AF46862AEEF8220015970E /* ProfileEditPopup.swift */,
+				56A7032D2B16DD1300E76801 /* ReminderConfirmationPopupView.swift */,
 			);
 			path = Popups;
 			sourceTree = "<group>";
@@ -267,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				56267ECB2AD7640A00A39AB7 /* ProfileView.swift */,
+				56D4A5B52B06E3EC00662FAB /* DoctorView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -275,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				565724B32AE9E81E000FB2ED /* LearnCardContent.swift */,
+				56D4A5AC2B03111900662FAB /* CardCollectionInfo.swift */,
 			);
 			path = Learning;
 			sourceTree = "<group>";
@@ -282,9 +332,18 @@
 		565724B52AE9F21A000FB2ED /* Learning */ = {
 			isa = PBXGroup;
 			children = (
-				565724B62AE9F230000FB2ED /* LearnCardsViewModel.swift */,
+				56D4A5AA2B03103200662FAB /* LearningViewModel.swift */,
 			);
 			path = Learning;
+			sourceTree = "<group>";
+		};
+		56863C1A2B166EE80006CA45 /* Reminders */ = {
+			isa = PBXGroup;
+			children = (
+				56CB6F8F2ACE38B5008750FD /* ReminderListView.swift */,
+				56863C1B2B166F0B0006CA45 /* ReminderButtonContent.swift */,
+			);
+			path = Reminders;
 			sourceTree = "<group>";
 		};
 		56AF46782AEE27A50015970E /* Tags */ = {
@@ -331,7 +390,7 @@
 		56AF468E2AEF37E30015970E /* Recognition */ = {
 			isa = PBXGroup;
 			children = (
-				56AF46B12AF0A8D40015970E /* Kofy.mlmodel */,
+				5609B7542B0EB56600B3A9BA /* Kofy.mlmodel */,
 				56AF46972AEF3B2C0015970E /* objectData.json */,
 				56AF46912AEF39EB0015970E /* Classification.swift */,
 				56AF46B32AF0A8FD0015970E /* PredictionStatus.swift */,
@@ -408,6 +467,22 @@
 			path = Prescription;
 			sourceTree = "<group>";
 		};
+		56BD14832B181E200066A1F6 /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				56BD14842B181E2F0066A1F6 /* Toast.swift */,
+			);
+			path = Toast;
+			sourceTree = "<group>";
+		};
+		56BD14942B2A954D0066A1F6 /* Credits */ = {
+			isa = PBXGroup;
+			children = (
+				56BD14952B2A956C0066A1F6 /* CreditsView.swift */,
+			);
+			path = Credits;
+			sourceTree = "<group>";
+		};
 		56CB6F3B2ACC9350008750FD = {
 			isa = PBXGroup;
 			children = (
@@ -427,15 +502,16 @@
 		56CB6F462ACC9350008750FD /* Kofy */ = {
 			isa = PBXGroup;
 			children = (
+				56BD14862B1841EA0066A1F6 /* Kofy.entitlements */,
+				56CB6F682ACD27CE008750FD /* Info.plist */,
 				56F2F95B2AF3543300FF4F75 /* Services */,
 				56AF46AB2AF0A8840015970E /* Foundation */,
-				56267EDB2ADB6ECA00A39AB7 /* ViewModels */,
 				56267EC62AD74B1000A39AB7 /* Models */,
-				56CB6F682ACD27CE008750FD /* Info.plist */,
-				56CB6F652ACD26EB008750FD /* Fonts */,
+				56267EDB2ADB6ECA00A39AB7 /* ViewModels */,
 				56CB6F5A2ACD0D80008750FD /* Views */,
 				56267EE42ADDD26A00A39AB7 /* Components */,
 				56CB6F552ACD0CBA008750FD /* Media */,
+				56CB6F652ACD26EB008750FD /* Fonts */,
 				56CB6F472ACC9350008750FD /* KofyApp.swift */,
 				56CB6F492ACC9350008750FD /* ContentView.swift */,
 				56CB6F4B2ACC9351008750FD /* Assets.xcassets */,
@@ -456,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				56CB6F562ACD0CE2008750FD /* TextEncrypt.mp4 */,
+				565355A82B2AB724009AEB71 /* notification.wav */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -466,13 +543,15 @@
 				56CB6F8B2ACE2F0D008750FD /* HomeView.swift */,
 				56267EC12AD7428200A39AB7 /* DailyView.swift */,
 				56267EC32AD74A6100A39AB7 /* SpeechSessionView.swift */,
-				56CB6F8F2ACE38B5008750FD /* ReminderListView.swift */,
+				5609B74A2B08A1E200B3A9BA /* Prescription */,
 				56AF467B2AEE27E60015970E /* Tags */,
 				56267EE92ADF042500A39AB7 /* Landing */,
 				56267EEF2ADF4A5300A39AB7 /* Popups */,
 				56267EF02ADF4A8300A39AB7 /* History */,
 				56267EF22ADF4ACD00A39AB7 /* Learning */,
 				56267EF32ADF4B0800A39AB7 /* Profile */,
+				56BD14942B2A954D0066A1F6 /* Credits */,
+				56863C1A2B166EE80006CA45 /* Reminders */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -483,6 +562,14 @@
 				56CB6F662ACD26F4008750FD /* ZenTokyoZoo-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		56D4A5B72B07E90700662FAB /* Summaries */ = {
+			isa = PBXGroup;
+			children = (
+				56D4A5B82B07E92600662FAB /* SummariesViewModel.swift */,
+			);
+			path = Summaries;
 			sourceTree = "<group>";
 		};
 		56F2F9582AF2EC7000FF4F75 /* Profile */ = {
@@ -497,6 +584,8 @@
 			isa = PBXGroup;
 			children = (
 				56F2F95C2AF3544000FF4F75 /* WebServices.swift */,
+				5609B7562B0EBF2200B3A9BA /* DataManager.swift */,
+				56A7032B2B16DBDB00E76801 /* NotificationManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -570,6 +659,7 @@
 				56CB6F4F2ACC9351008750FD /* Preview Assets.xcassets in Resources */,
 				56CB6F672ACD26F4008750FD /* ZenTokyoZoo-Regular.ttf in Resources */,
 				56AF46982AEF3B2C0015970E /* objectData.json in Resources */,
+				565355A92B2AB724009AEB71 /* notification.wav in Resources */,
 				56CB6F4C2ACC9351008750FD /* Assets.xcassets in Resources */,
 				56CB6F582ACD0CE2008750FD /* TextEncrypt.mp4 in Resources */,
 			);
@@ -585,7 +675,9 @@
 				56267EC02AD46BA400A39AB7 /* HistoryListView.swift in Sources */,
 				56AF46B02AF0A88E0015970E /* LiveCameraRepresentable.swift in Sources */,
 				56267ED22AD771B200A39AB7 /* PopupModifier.swift in Sources */,
+				56D4A5AD2B03111900662FAB /* CardCollectionInfo.swift in Sources */,
 				56CB6F8A2ACE2C53008750FD /* SignInView.swift in Sources */,
+				56D4A5B62B06E3EC00662FAB /* DoctorView.swift in Sources */,
 				56AF46A02AF054B50015970E /* VerificationViewModel.swift in Sources */,
 				56267EDF2ADB6F1000A39AB7 /* HistoryContentModel.swift in Sources */,
 				56267EF52AE0531400A39AB7 /* RegistrationPopup.swift in Sources */,
@@ -594,36 +686,44 @@
 				565724AC2AE0A033000FB2ED /* AudioSessionManager.swift in Sources */,
 				56AF467A2AEE27C20015970E /* IndividualTag.swift in Sources */,
 				56AF46AA2AF0A8140015970E /* PredictionCameraView.swift in Sources */,
+				56D4A5B92B07E92600662FAB /* SummariesViewModel.swift in Sources */,
 				56CB6F882ACE2810008750FD /* SignUpView.swift in Sources */,
+				5609B7512B0E856F00B3A9BA /* NewSessionModel.swift in Sources */,
 				FBF5D0A32AD9C33900B1F418 /* SignUpModel.swift in Sources */,
+				56A7032C2B16DBDB00E76801 /* NotificationManager.swift in Sources */,
 				56AF467D2AEE27FE0015970E /* TagListView.swift in Sources */,
-				565724B72AE9F230000FB2ED /* LearnCardsViewModel.swift in Sources */,
+				5609B7572B0EBF2200B3A9BA /* DataManager.swift in Sources */,
 				56AF468D2AEF30CB0015970E /* DoctorsViewModel.swift in Sources */,
 				56267EE62ADDD37000A39AB7 /* HistoryCard.swift in Sources */,
 				56AF46AF2AF0A88E0015970E /* LiveCameraViewController.swift in Sources */,
+				5609B7492B089FBC00B3A9BA /* ScanDocumentView.swift in Sources */,
 				56AF468A2AEF305E0015970E /* DoctorInfo.swift in Sources */,
 				565724B12AE9E168000FB2ED /* LearnCardsPopup.swift in Sources */,
+				56BD14852B181E2F0066A1F6 /* Toast.swift in Sources */,
 				56267ED62AD87EE400A39AB7 /* TextToSpeech.swift in Sources */,
 				56267EE12ADB6F6900A39AB7 /* HistoryContentViewModel.swift in Sources */,
 				561ED3972AF5A87800B95849 /* TokenVerificationModel.swift in Sources */,
 				56267EC82AD74B2500A39AB7 /* SpeechRecognizer.swift in Sources */,
 				56AF469D2AF0431E0015970E /* PredictionLabel.swift in Sources */,
 				56267EE32ADB749500A39AB7 /* LearnListView.swift in Sources */,
+				56863C1C2B166F0B0006CA45 /* ReminderButtonContent.swift in Sources */,
 				56AF46772AEDE23E0015970E /* NumberOverlay.swift in Sources */,
-				56AF46872AEEF8220015970E /* ProfileEditPopup.swift in Sources */,
 				56AF46752AEDD9340015970E /* ImagePicker.swift in Sources */,
 				56267EC42AD74A6100A39AB7 /* SpeechSessionView.swift in Sources */,
 				56CB6F5C2ACD0D90008750FD /* SplashView.swift in Sources */,
-				56AF46B22AF0A8D40015970E /* Kofy.mlmodel in Sources */,
 				56F2F95D2AF3544000FF4F75 /* WebServices.swift in Sources */,
+				56BD148F2B1D4C7E0066A1F6 /* QuickSignInWithApple.swift in Sources */,
+				56BD14962B2A956C0066A1F6 /* CreditsView.swift in Sources */,
 				56AF46A52AF0554C0015970E /* VerificationModel.swift in Sources */,
 				56AF46732AECDCEB0015970E /* CustomInputStepper.swift in Sources */,
+				56A7032E2B16DD1300E76801 /* ReminderConfirmationPopupView.swift in Sources */,
 				56CB6F4A2ACC9350008750FD /* ContentView.swift in Sources */,
 				56267EEC2ADF057000A39AB7 /* SignInModel.swift in Sources */,
 				FBF5D0A52AD9C76200B1F418 /* SignUpViewModel.swift in Sources */,
 				56AF46922AEF39EB0015970E /* Classification.swift in Sources */,
 				56AF46B42AF0A8FD0015970E /* PredictionStatus.swift in Sources */,
 				56F2F95A2AF2EC8600FF4F75 /* ProfileViewModel.swift in Sources */,
+				56D4A5AB2B03103200662FAB /* LearningViewModel.swift in Sources */,
 				56CB6F902ACE38B5008750FD /* ReminderListView.swift in Sources */,
 				56267ECE2AD766DB00A39AB7 /* NewSessionPopupView.swift in Sources */,
 				56267ED42AD7720D00A39AB7 /* BottomPopupView.swift in Sources */,
@@ -632,7 +732,9 @@
 				56267EC22AD7428200A39AB7 /* DailyView.swift in Sources */,
 				56267EEE2ADF057B00A39AB7 /* SignInViewModel.swift in Sources */,
 				56267ECC2AD7640A00A39AB7 /* ProfileView.swift in Sources */,
+				5609B7552B0EB56600B3A9BA /* Kofy.mlmodel in Sources */,
 				56AF46BF2AF181810015970E /* PrescriptionResultsView.swift in Sources */,
+				5609B74C2B08A1FB00B3A9BA /* PrescriptionPreviewView.swift in Sources */,
 				56267EDA2ADB6AF100A39AB7 /* HistoryView.swift in Sources */,
 				56AF46BC2AF0AA120015970E /* Helpers.swift in Sources */,
 				56CB6F482ACC9350008750FD /* KofyApp.swift in Sources */,
@@ -771,15 +873,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Kofy/Kofy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Kofy/Preview Content\"";
-				DEVELOPMENT_TEAM = 6CXRQS8B7G;
+				DEVELOPMENT_TEAM = 7NP8953QA5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kofy/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Se utilizará la cámara para facilitar la detección de objetos en la sección de aprender";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Kofy actualiza tu perfil con los datos capturados en la app de Salud";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Kofy actualiza tu perfil con los datos capturados en la app de Salud";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Se utilizará el microfono para capturar los subtitulos";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Se utilizará el microfono para capturar los subtitulos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -793,7 +897,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Diegogtz03.Kofy;
+				PRODUCT_BUNDLE_IDENTIFIER = DiloEnSenas.Kofy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -809,15 +913,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Kofy/Kofy.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Kofy/Preview Content\"";
-				DEVELOPMENT_TEAM = 6CXRQS8B7G;
+				DEVELOPMENT_TEAM = 7NP8953QA5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kofy/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Se utilizará la cámara para facilitar la detección de objetos en la sección de aprender";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Kofy actualiza tu perfil con los datos capturados en la app de Salud";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Kofy actualiza tu perfil con los datos capturados en la app de Salud";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Se utilizará el microfono para capturar los subtitulos";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Se utilizará el microfono para capturar los subtitulos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -831,7 +937,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Diegogtz03.Kofy;
+				PRODUCT_BUNDLE_IDENTIFIER = DiloEnSenas.Kofy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

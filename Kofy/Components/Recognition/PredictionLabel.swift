@@ -12,6 +12,8 @@ struct PredictionLabel: View {
     @Binding var showingView: Bool
     @Binding var showingCards: Bool
     @Binding var selectedCardId: Int
+    @Binding var selectedTitle: String
+    @Binding var selectedIcon: String
     
     var body: some View {
         GeometryReader { geometry in
@@ -20,6 +22,8 @@ struct PredictionLabel: View {
                 
                 Button {
                     selectedCardId = labelData.id
+                    selectedTitle = labelData.label
+                    selectedIcon = labelData.image
                     showingView.toggle()
                     withAnimation {
                         showingCards.toggle()
@@ -56,5 +60,5 @@ struct PredictionLabel: View {
 }
 
 #Preview {
-    PredictionLabel(labelData: Classification(), showingView: .constant(true), showingCards: .constant(true), selectedCardId: .constant(0))
+    PredictionLabel(labelData: Classification(), showingView: .constant(true), showingCards: .constant(true), selectedCardId: .constant(0), selectedTitle: .constant(""), selectedIcon: .constant(""))
 }

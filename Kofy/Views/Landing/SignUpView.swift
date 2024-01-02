@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CryptoKit
+import AuthenticationServices
 
 struct SignUpView: View {
     @EnvironmentObject var authInfo: VerificationViewModel
@@ -15,8 +16,41 @@ struct SignUpView: View {
     @State private var password: String = ""
     @Environment(\.dismiss) var dismiss
     
+    @State private var toast: Toast? = nil
+    
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
+    func validateEmail() -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: mail)
+    }
+    
+    func validatePassword() -> Bool {
+        let passwordRegex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$"
+        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
+        return passwordPredicate.evaluate(with: password)
+    }
+    
+    func checkInputs() -> Bool {
+        if (username == "" || mail == "" || password == "") {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Campos vacíos", width: 300)
+            return false
+        }
+        
+        if !validateEmail() {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Correo inválido", width: 300)
+            return false
+        }
+        
+        if !validatePassword() {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Contraseña debe ser de 8 caracteres, letras, números y caracteres especial")
+            return false
+        }
+        
+        return true
     }
     
     var body: some View {
@@ -75,9 +109,12 @@ struct SignUpView: View {
                         
                         Button {
                             dismissKeyboard()
-                            let hashedPassword = SHA512.hash(data: Data(password.utf8))
-                            let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
-                            authInfo.signUp(username: username, email: mail, password: hashString, type: 0)
+                            
+                            if checkInputs() {
+                                let hashedPassword = SHA512.hash(data: Data(password.utf8))
+                                let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
+                                authInfo.signUp(username: username, email: mail, password: hashString, type: 0, toast: $toast)
+                            }
                         } label: {
                             Text("Registrarme")
                                 .frame(width: geometry.size.width / 2.5)
@@ -117,6 +154,7 @@ struct SignUpView: View {
                     .bold()
                 }
             }
+            .toastView(toast: $toast)
             .frame(width: geometry.size.width, height: geometry.size.height)
             .navigationBarBackButtonHidden(true)
             .toolbar {

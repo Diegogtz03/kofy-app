@@ -15,7 +15,7 @@ class AudioSessionManager {
     
     func configureRecognitionAudioSession() {
         do {
-            try recognitionAudioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try recognitionAudioSession.setCategory(.record, mode: .measurement, options: .mixWithOthers)
             try recognitionAudioSession.setActive(false, options: .notifyOthersOnDeactivation)
             try recognitionAudioSession.setInputGain(0.5)
         } catch {
@@ -25,7 +25,7 @@ class AudioSessionManager {
     
     func configurePlaybackAudioSession() {
         do {
-            try playbackAudioSession.setCategory(.playback, mode: .default, options: .duckOthers)
+            try playbackAudioSession.setCategory(.playback, mode: .default, options: .mixWithOthers)
             try playbackAudioSession.setActive(false)
         } catch {
             print("Error configuring Playback Audio Session")
@@ -44,7 +44,8 @@ class AudioSessionManager {
     
     func activatePlaybackSession() {
         do {
-            try recognitionAudioSession.setActive(false)
+            try recognitionAudioSession.setActive(false, options: .notifyOthersOnDeactivation)
+            try playbackAudioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
             try playbackAudioSession.setActive(true)
         } catch {
             print("Error Activating Recognition Audio Session")

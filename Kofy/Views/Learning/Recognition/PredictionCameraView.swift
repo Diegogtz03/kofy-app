@@ -11,6 +11,8 @@ struct PredictionCameraView : View {
     @Binding var showingView: Bool
     @Binding var cardsShown: Bool
     @Binding var selectedCardId: Int
+    @Binding var selectedTitle: String
+    @Binding var selectedImage: String
     @EnvironmentObject var predictionStatus: PredictionStatus
     @StateObject var classifierViewModel = ClassifierViewModel()
     
@@ -42,7 +44,7 @@ struct PredictionCameraView : View {
                     .padding([.top, .leading], 15)
                 }
                 
-                PredictionLabel(labelData: classifierViewModel.getPredictionData(label: predictionLabel), showingView: $showingView, showingCards: $cardsShown, selectedCardId: $selectedCardId)
+                PredictionLabel(labelData: classifierViewModel.getPredictionData(label: predictionLabel), showingView: $showingView, showingCards: $cardsShown, selectedCardId: $selectedCardId, selectedTitle: $selectedTitle, selectedIcon: $selectedImage)
                 
             }
             .onAppear(perform: classifierViewModel.loadJSON)
@@ -52,5 +54,5 @@ struct PredictionCameraView : View {
 }
 
 #Preview {
-    PredictionCameraView(showingView: .constant(true), cardsShown: .constant(true), selectedCardId: .constant(0))
+    PredictionCameraView(showingView: .constant(true), cardsShown: .constant(true), selectedCardId: .constant(0), selectedTitle: .constant(""), selectedImage: .constant(""))
 }

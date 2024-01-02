@@ -19,7 +19,6 @@ struct TagListView: View {
     
     @State var refreshTagList = false;
     
-    
     func addTag() {
         if !tags.contains(tagField.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) {
             withAnimation {
@@ -29,6 +28,10 @@ struct TagListView: View {
             tagField = ""
             tagNum += 1
         }
+    }
+    
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     var body: some View {
@@ -82,6 +85,7 @@ struct TagListView: View {
                     .padding()
                 
                     Button {
+                        dismissKeyboard()
                         dismiss()
                     } label: {
                         VStack {
@@ -97,6 +101,7 @@ struct TagListView: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden()
             .navigationBarBackButtonHidden(true)
         }
     }
