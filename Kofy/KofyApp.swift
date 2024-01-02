@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct KofyApp: App {
@@ -13,5 +14,6 @@ struct KofyApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [History.self, Summary.self, Prescription.self, PrescriptionReminder.self, RegisteredReminders.self])
     }
 }

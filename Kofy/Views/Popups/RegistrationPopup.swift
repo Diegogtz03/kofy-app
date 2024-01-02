@@ -13,6 +13,8 @@ struct RegistrationPopup: View {
     @EnvironmentObject var profileInfo: ProfileViewModel
     @Environment(\.colorScheme) var colorScheme
     
+    @State var isUpdating: Bool
+    
     let profilePictureCount = 5
     
     // Personal data state variables
@@ -23,7 +25,7 @@ struct RegistrationPopup: View {
     @State private var profilePicture = 0
     
     // Medical Stats state variables
-    @State private var bloodType = HKCharacteristicTypeIdentifier.bloodType.rawValue
+    @State private var bloodType = "Seleccionar"
     @State private var height = 120
     @State private var weight: Float = 60.0
     @State private var allergies:[String] = []
@@ -33,20 +35,223 @@ struct RegistrationPopup: View {
     
     // Popup variables
     @Binding var popupIsShown: Bool
-    @State private var showImageSelectionSheet = false
-    @State private var photoSelectionIsLibrary = true
+    @State var cardSlideOffset = 0
     
     // Option variables
     let genders = ["Seleccionar", "Hombre", "Mujer", "Otro"]
     let bloodTypes = ["Seleccionar", "AB+", "AB-", "A+", "A-", "B+", "B-", "O+", "O-"]
     
+    @State private var toast: Toast? = nil
+    
+    // HEALTH KIT
+    @State private var hasRequestedHealthData = false
+    var healthStore = HKHealthStore()
+    
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
+    
+    func checkInputs() -> Bool {
+        // Check Names
+        if (names == "") {
+            toast = Toast(style: .warning, appearPosition: .bottom, message: "Nombre(s) vacíos", width: 350, topOffset: -40)
+            return false
+        }
+        
+        // Check last names
+        if (lastNames == "") {
+            toast = Toast(style: .warning, appearPosition: .bottom, message: "Apellido(s) vacíos", width: 350, topOffset: -40)
+            return false
+        }
+        
+        // Check Birthday
+        if (birthday == Date() || Calendar.current.dateComponents([.year, .month, .day], from: birthday, to: Date()).year ?? 0 < 13) {
+            toast = Toast(style: .warning, appearPosition: .bottom, message: "Fecha de nacimiento inválida", topOffset: -40)
+            return false
+        }
+        
+        // Check Gender
+        if (gender == "Seleccionar") {
+            toast = Toast(style: .warning, appearPosition: .bottom, message: "Selecciona un género", width: 350, topOffset: -40)
+            return false
+        }
+        
+        // Check bloodType
+        if (bloodType == "Seleccionar") {
+            toast = Toast(style: .warning, appearPosition: .bottom, message: "Selecciona tipo de sangre", width: 350, topOffset: -40)
+            return false
+        }
+        
+        return true
+    }
+    
+    func updateFieldData() {
+        if (isUpdating) {
+            // Personal data state variables
+            names = profileInfo.profileInfo.names
+            lastNames = profileInfo.profileInfo.lastNames
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            birthday = dateFormatter.date(from: profileInfo.profileInfo.birthday)!
+            gender = profileInfo.profileInfo.gender
+            profilePicture = profileInfo.profileInfo.profilePicture
+            
+            // Medical Stats state variables
+            bloodType = profileInfo.profileInfo.bloodType
+            height = profileInfo.profileInfo.height
+            weight = profileInfo.profileInfo.weight
+            
+            allergies = profileInfo.profileInfo.allergies == "" ? [] : profileInfo.profileInfo.allergies.components(separatedBy: ",")
+            allergiesCount = allergies.count
+            diseases = profileInfo.profileInfo.diseases == "" ? [] : profileInfo.profileInfo.diseases.components(separatedBy: ",")
+            diseasesCount = diseases.count
+        }
+    }
+    
+    func setUpHealthRequest() {
+        if HKHealthStore.isHealthDataAvailable() {
+            let infoToRead = Set([
+                            HKCharacteristicType.init(HKCharacteristicTypeIdentifier.dateOfBirth),
+                            HKCharacteristicType.init(HKCharacteristicTypeIdentifier.biologicalSex),
+                            HKCharacteristicType.init(HKCharacteristicTypeIdentifier.bloodType),
+                            HKQuantityType.init(HKQuantityTypeIdentifier.height),
+                            HKQuantityType.init(HKQuantityTypeIdentifier.bodyMass),
+                            ])
+
+            healthStore.requestAuthorization(toShare: nil, read: infoToRead, completion: { (success, error) in
+
+                if let error = error {
+                    print("HealthKit Authorization Error: \(error.localizedDescription)")
+                } else {
+                    if success {
+                        if self.hasRequestedHealthData {
+                            print("You've already requested access to health data. ")
+                        } else {
+                            print("HealthKit authorization request was successful! ")
+                        }
+                        self.hasRequestedHealthData = true
+                    } else {
+                        print("HealthKit authorization did not complete successfully.")
+                    }
+                }
+            })
+        
+            readData()
+            readMostRecentSample()
+        }
+    }
+    
+    func readData() {
+        var sex : HKBiologicalSex?
+        var finalBlood : HKBloodType?
+        
+        // GET BIRTHDAY
+        do {
+            let birthdayData = try healthStore.dateOfBirthComponents().date!
+            birthday = birthdayData
+        } catch{}
+        
+        
+        // GET SEX
+        do {
+            let getSex = try healthStore.biologicalSex()
+            sex = getSex.biologicalSex
+            if let data = sex {
+                let sexData = self.getReadableBiologicalSex(biologicalSex: data)
+                gender = sexData
+            }
+        } catch{}
+        
+        // Get blood Type
+        do {
+            let bloodTypeHK = try healthStore.bloodType()
+            finalBlood = bloodTypeHK.bloodType
+            if let data = finalBlood {
+                let bloodData = self.getReadableBloodType(bloodType: data)
+                bloodType = bloodData
+            }
+        } catch{}
+    }
+    
+    func getReadableBiologicalSex(biologicalSex: HKBiologicalSex?) -> String {
+        var biologicalSexTest = "Not Retrived"
+
+        if biologicalSex != nil {
+            switch biologicalSex!.rawValue{
+                case 0:
+                    biologicalSexTest = "Seleccionar"
+                case 1:
+                    biologicalSexTest = "Mujer"
+                case 2:
+                    biologicalSexTest = "Hombre"
+                case 3:
+                    biologicalSexTest = "Otro"
+                default:
+                    biologicalSexTest = "Seleccionar"
+            }
+        }
+
+        return biologicalSexTest
+    }
+    
+    func getReadableBloodType(bloodType: HKBloodType?) -> String {
+        var bloodTypeFinal = "Seleccionar"
+
+        if bloodType != nil {
+            switch bloodType!.rawValue {
+                case 0:
+                    bloodTypeFinal = "Seleccionar"
+                case 1:
+                    bloodTypeFinal = "A+"
+                case 2:
+                    bloodTypeFinal = "A-"
+                case 3:
+                    bloodTypeFinal = "B+"
+                case 4:
+                    bloodTypeFinal = "B-"
+                case 5:
+                    bloodTypeFinal = "AB+"
+                case 6:
+                    bloodTypeFinal = "AB-"
+                case 7:
+                    bloodTypeFinal = "O+"
+                case 8:
+                    bloodTypeFinal = "O-"
+                default:
+                    bloodTypeFinal = "Seleccionar"
+            }
+        }
+
+        return bloodTypeFinal
+    }
+    
+    func readMostRecentSample() {
+        let weightType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.bodyMass)!
+        let heightType = HKSampleType.quantityType(forIdentifier: HKQuantityTypeIdentifier.height)!
+
+        let queryWeight = HKSampleQuery(sampleType: weightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+
+            if let result = results?.last as? HKQuantitySample {
+                weight = Float(result.quantity.doubleValue(for: HKUnit.gram()) / 1000)
+            }
+        }
+
+        let queryHeight = HKSampleQuery(sampleType: heightType, predicate: nil, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { (query, results, error) in
+
+            if let result = results?.last as? HKQuantitySample {
+                // STORE TO VARIABLE
+                height = Int(result.quantity.doubleValue(for: HKUnit.meter()) * 100)
+            }
+        }
+
+        healthStore.execute(queryWeight)
+        healthStore.execute(queryHeight)
+    }
+    
     var body: some View {
         GeometryReader { geometry in
-            NavigationStack {
+            ZStack {
                 VStack {
                     VStack {
                         HStack {
@@ -59,10 +264,27 @@ struct RegistrationPopup: View {
                                 .onChange(of: popupIsShown, { oldValue, newValue in
                                     if (!newValue) {
                                         names = ""
+                                        cardSlideOffset = 0
+                                    } else {
+                                        updateFieldData()
                                     }
                                 })
                             
                             Spacer()
+                            
+                            if (isUpdating) {
+                                Button {
+                                    dismissKeyboard()
+                                    popupIsShown.toggle()
+                                } label: {
+                                    Image(systemName: "x.circle")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundStyle(.gray)
+                                        .frame(width: 30)
+                                        .padding([.trailing])
+                                }
+                            }
                         }
                         .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)
@@ -135,7 +357,6 @@ struct RegistrationPopup: View {
                             .background(Color(red: 0.976, green: 0.976, blue: 0.976))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
 
-                            
                             HStack {
                                 Text("Genero")
                                 Spacer()
@@ -200,6 +421,7 @@ struct RegistrationPopup: View {
                                         Text("Alergias")
                                             .bold()
                                     }
+                                    .ignoresSafeArea(.keyboard)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .shadow(radius: 3)
                                     .overlay(alignment: .topTrailing, content: {
@@ -218,6 +440,7 @@ struct RegistrationPopup: View {
                                         Text("Enfermedades")
                                             .bold()
                                     }
+                                    .ignoresSafeArea(.keyboard)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .shadow(radius: 3)
                                     .overlay(alignment: .topTrailing, content: {
@@ -237,18 +460,24 @@ struct RegistrationPopup: View {
                         .padding()
                     
                         Button {
-                            // REVISAR INPUTS AQUÍ
-                            // GUARDAR PERFIL AQUÍ
                             dismissKeyboard()
                             
-                            let allergiesFormatted = allergies.map{String($0)}.joined(separator: ",")
-                            let diseasesFormatted = diseases.map{String($0)}.joined(separator: ",")
-                            
-                            let bodyData = ProfileInformation(userId: authInfo.userInfo.userId, names: names, last_names: lastNames, birthday: birthday, gender: gender, profile_picture: profilePicture, blood_type: bloodType, height: height, weight: weight, allergies: allergiesFormatted, diseases: diseasesFormatted)
-                            
-                            profileInfo.setProfileInfo(bodyData: bodyData, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId)
-                            
-                            popupIsShown.toggle()
+                            if checkInputs() {
+                                let allergiesFormatted = allergies.map{String($0)}.joined(separator: ",")
+                                let diseasesFormatted = diseases.map{String($0)}.joined(separator: ",")
+                                
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "yyyy-MM-dd"
+                                let formattedBirthday = dateFormatter.string(from: birthday)
+                                
+                                let bodyData = ProfileInformation(userId: authInfo.userInfo.userId, names: names, last_names: lastNames, birthday: formattedBirthday, gender: gender, profile_picture: profilePicture, blood_type: bloodType, height: height, weight: weight, allergies: allergiesFormatted, diseases: diseasesFormatted)
+                                
+                                if (!isUpdating) {
+                                    profileInfo.setProfileInfo(bodyData: bodyData, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId, toast: $toast, popupIsShown: $popupIsShown)
+                                } else {
+                                    profileInfo.updateProfileInfo(bodyData: bodyData, token: authInfo.userInfo.token, userId: authInfo.userInfo.userId, toast: $toast, popupIsShown: $popupIsShown)
+                                }
+                            }
                         } label: {
                             VStack {
                                 Text("Guardar")
@@ -269,10 +498,36 @@ struct RegistrationPopup: View {
                     .padding(.bottom, geometry.safeAreaInsets.bottom)
                     .background(.white)
                     .clipShape(RoundedCornersShape(radius: 16, corners: [.topLeft, .topRight]))
+                    .offset(y: CGFloat(cardSlideOffset))
                 }
                 .shadow(color: .gray, radius: 15, x: 0,  y: 8)
                 .edgesIgnoringSafeArea([.bottom])
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            if (isUpdating) {
+                                if (value.translation.height > 0 && popupIsShown) {
+                                    cardSlideOffset = Int(value.translation.height)
+                                }
+                                
+                                if value.translation.height > 100 {
+                                    dismissKeyboard()
+                                    popupIsShown = false
+                                } else if (popupIsShown) {
+                                    withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                        cardSlideOffset = 0
+                                    }
+                                }
+                            }
+                        }
+                )
             }
+            .onAppear {
+                if (!isUpdating) {
+                    setUpHealthRequest()
+                }
+            }
+            .toastView(toast: $toast)
         }
     }
 }
@@ -280,6 +535,7 @@ struct RegistrationPopup: View {
 #Preview {
     ZStack {
         Color(.red)
-        RegistrationPopup(popupIsShown: .constant(true))
+            .ignoresSafeArea()
+        RegistrationPopup(isUpdating: true, popupIsShown: .constant(true))
     }
 }

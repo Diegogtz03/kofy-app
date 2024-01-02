@@ -27,8 +27,9 @@ class SpeechRecognizer: ObservableObject {
         }
     }
     
-    @Published var transcript: String = ""
-    
+    @Published var finalTranscript: String = ""
+    @Published var ongoingTranscript: String = ""
+
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
@@ -59,11 +60,41 @@ class SpeechRecognizer: ObservableObject {
     }
     
     func reset() {
+////        task?.cancel()
+//        audioEngine?.stop()
+////        audioEngine = nil
+//        request = nil
+////        task = nil
+        finalTranscript += ongoingTranscript
         task?.cancel()
-        audioEngine?.stop()
-        audioEngine = nil
-        request = nil
-        task = nil
+        audioEngine?.pause()
+    }
+    
+    func resumeTranscribing(givenAudioSession: AVAudioSession) {
+        do {
+            let (audioEngine, request) = try Self.prepareEngine(givenAudioSession: givenAudioSession)
+            self.audioEngine = audioEngine
+            self.request = request
+
+            self.task = recognizer!.recognitionTask(with: request) { result, error in
+                let receivedFinalResult = result?.isFinal ?? false
+                let receivedError = error != nil
+                
+                if receivedFinalResult || receivedError {
+                    audioEngine.stop()
+                    audioEngine.inputNode.removeTap(onBus: 0)
+                }
+                
+                if let result = result {
+                    self.speak(result.bestTranscription.formattedString)
+                }
+            }
+
+            try audioEngine.start()
+        } catch {
+            reset()
+            speakError(error)
+        }
     }
     
     func transcribe(givenAudioSession: AVAudioSession) {
@@ -88,6 +119,7 @@ class SpeechRecognizer: ObservableObject {
                     }
                     
                     if let result = result {
+//                        self.storedTranscript = result.bestTranscription.formattedString
                         self.speak(result.bestTranscription.formattedString)
                     }
                 }
@@ -132,7 +164,7 @@ class SpeechRecognizer: ObservableObject {
     }
     
     private func speak(_ message: String) {
-        transcript = message
+        ongoingTranscript = message
     }
     
     private func speakError(_ error: Error) {
@@ -142,7 +174,7 @@ class SpeechRecognizer: ObservableObject {
         } else {
             errorMessage += error.localizedDescription
         }
-        transcript = "<< \(errorMessage) >>"
+        finalTranscript = "<< \(errorMessage) >>"
     }
 }
 

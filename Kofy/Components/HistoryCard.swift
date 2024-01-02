@@ -11,24 +11,24 @@ struct HistoryCard: View {
     var namespace: Namespace.ID
     @Binding var shown: Bool
     
-    @State var content: HistoryContentModel
+    @State var content: History
     var cardColors = ["CardColor0", "CardColor1", "CardColor2", "CardColor3", "CardColor4", "CardColor5"]
     
     var body: some View {
         // INICIO DE TARJETA
         ZStack(alignment: .leading) {
-            LinearGradient(colors: [Color(cardColors[content.color]), Color(red: 0.34, green: 0.34, blue: 0.34)],
+            LinearGradient(colors: [Color(cardColors[content.sessionColor]), Color(red: 0.34, green: 0.34, blue: 0.34)],
                            startPoint: .top,
                            endPoint: .center)
             .matchedGeometryEffect(id: "colorHeader", in: namespace, isSource: true)
             VStack(alignment: .leading, spacing: 3) {
-                Text(content.doctor)
+                Text(content.sessionName)
                     .font(Font.system(size: 21, weight: .bold))
                     .matchedGeometryEffect(id: "title", in: namespace, isSource: true)
-                Text(content.description)
+                Text(content.sessionDoctor)
                     .font(Font.system(size: 13))
-                    .matchedGeometryEffect(id: "description", in: namespace, properties: .size, isSource: true)
-                Text(content.date)
+                    .matchedGeometryEffect(id: "doctor", in: namespace, properties: .size, isSource: true)
+                Text(content.sessionDate)
                     .font(Font.system(size: 13))
                     .foregroundStyle(.yellow)
                     .matchedGeometryEffect(id: "date", in: namespace, properties: .size, isSource: true)
@@ -45,8 +45,8 @@ struct HistoryCard: View {
     }
 }
 
-#Preview {
-    @Namespace var namespace
-    
-    return HistoryCard(namespace: namespace, shown: .constant(true), content: HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 2))
-}
+//#Preview {
+//    @Namespace var namespace
+//    
+//    return HistoryCard(namespace: namespace, shown: .constant(true), content: History()
+//}

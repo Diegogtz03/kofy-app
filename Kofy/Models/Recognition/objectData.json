@@ -1,17 +1,32 @@
 [
     {
-        "id": 0,
-        "label": "Inhalador",
-        "image": "learn1"
+        "id": 5,
+        "label": "Baumanómetro",
+        "image": "baumanometro_icon"
+    },
+    {
+        "id": 4,
+        "label": "Glucómetro",
+        "image": "glucometro_icon"
     },
     {
         "id": 1,
-        "label": "Estetoscopio",
-        "image": "learn2"
+        "label": "Inhalador",
+        "image": "inhalador_icon"
+    },
+    {
+        "id": 3,
+        "label": "Jeringa",
+        "image": "jeringa_icon"
+    },
+    {
+        "id": 6,
+        "label": "Pulsioxímetro",
+        "image": "pulsioximetro_icon"
     },
     {
         "id": 2,
-        "label": "Jeringa",
-        "image": "learn3"
-    }
+        "label": "Termómetro",
+        "image": "termometro_icon"
+    },
 ]

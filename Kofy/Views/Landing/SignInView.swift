@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CryptoKit
+import AuthenticationServices
 
 extension UINavigationController: UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
@@ -26,8 +27,30 @@ struct SignInView: View {
     @State private var btnIsDisabled = false
     @Environment(\.dismiss) var dismiss
     
+    @State private var toast: Toast? = nil
+    
     func dismissKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
+    func validateEmail() -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
+    }
+    
+    func checkInputs() -> Bool {
+        if (email == "" || password == "") {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Campos vacíos", width: 300)
+            return false
+        }
+        
+        if !validateEmail() {
+            toast = Toast(style: .warning, appearPosition: .top, message: "Correo inválido", width: 300)
+            return false
+        }
+        
+        return true
     }
     
     var body: some View {
@@ -56,6 +79,8 @@ struct SignInView: View {
                                 Color(red: 0.16, green: 0.16, blue: 0.16)
                                     .cornerRadius(10)
                                 TextField("Correo", text: $email)
+                                    .frame(height: .infinity)
+                                    .autocorrectionDisabled()
                                     .padding()
                                     .textInputAutocapitalization(.never)
                             }
@@ -65,6 +90,7 @@ struct SignInView: View {
                                 Color(red: 0.16, green: 0.16, blue: 0.16)
                                     .cornerRadius(10)
                                 SecureField("Contraseña", text: $password)
+                                    .frame(height: .infinity)
                                     .padding()
                                     .textInputAutocapitalization(.never)
                             }
@@ -74,13 +100,16 @@ struct SignInView: View {
                         
                         Button {
                             dismissKeyboard()
-                            btnIsDisabled.toggle()
                             
-                            let hashedPassword = SHA512.hash(data: Data(password.utf8))
-                            let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
-                            authInfo.login(email: email, password: hashString)
-                            
-                            btnIsDisabled.toggle()
+                            if (checkInputs()) {
+                                btnIsDisabled.toggle()
+                                
+                                let hashedPassword = SHA512.hash(data: Data(password.utf8))
+                                let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
+                                authInfo.login(email: email, password: hashString, toast: $toast)
+                                
+                                btnIsDisabled.toggle()
+                            }
                         } label: {
                             Text("Iniciar Sesión")
                                 .frame(width: geometry.size.width / 2.5)
@@ -105,24 +134,32 @@ struct SignInView: View {
                     }
                     .padding([.top, .bottom], 10)
                     
+                    
                     Button {
-                        print("Iniciar Sesión")
+                        
                     } label: {
-                        HStack {
-                            Image(systemName: "apple.logo")
-                                .font(.title)
-                            Text("Iniciar Sesión")
-                                .frame(width: geometry.size.width / 3.5)
-                        }
-                        .padding()
+                        QuickSignInWithApple()
                     }
-                    .disabled(btnIsDisabled)
-                    .background(.black)
-                    .cornerRadius(.infinity)
-                    .foregroundStyle(.white)
-                    .bold()
-                    .opacity(btnIsDisabled ? 0.8 : 1)
+                    
+//                    Button {
+//                        print("Iniciar Sesión")
+//                    } label: {
+//                        HStack {
+//                            Image(systemName: "apple.logo")
+//                                .font(.title)
+//                            Text("Iniciar Sesión")
+//                                .frame(width: geometry.size.width / 3.5)
+//                        }
+//                        .padding()
+//                    }
+//                    .disabled(btnIsDisabled)
+//                    .background(.black)
+//                    .cornerRadius(.infinity)
+//                    .foregroundStyle(.white)
+//                    .bold()
+//                    .opacity(btnIsDisabled ? 0.8 : 1)
                 }
+                .toastView(toast: $toast)
             }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .navigationBarBackButtonHidden(true)

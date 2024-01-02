@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LearnCard: View {
+    @State var cardCollectionInfo: CardCollectionInfo
+    
     var body: some View {
         ZStack {
             Color(.white)
@@ -15,11 +17,7 @@ struct LearnCard: View {
             VStack {
                 ZStack(alignment: .leading) {
                     Color(red: 0.956, green: 0.752, blue: 0.396)
-//                    LinearGradient(colors: [Color(red: 0.956, green: 0.752, blue: 0.396), Color(.white)],
-//                                   startPoint: .top,
-//                                   endPoint: .bottom)
-//                    .padding([.bottom], -30)
-                    Text("Inhalador")
+                    Text(cardCollectionInfo.name)
                         .font(Font.system(size: 25))
                         .bold()
                         .padding()
@@ -28,11 +26,21 @@ struct LearnCard: View {
                 
                 Spacer()
                 
-                Image("learn1")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: .infinity)
-                    .padding()
+                AsyncImage(url: URL(string: cardCollectionInfo.icon)) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image.resizable()
+                            .scaledToFit()
+                            .frame(height: .infinity)
+                            .padding()
+                    case .failure:
+                        Image(systemName: "photo")
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
             }
         }
         .frame(width: 170, height: 170)
@@ -41,5 +49,5 @@ struct LearnCard: View {
 }
 
 #Preview {
-    LearnCard()
+    LearnCard(cardCollectionInfo: CardCollectionInfo(id: 0, name: "Inhalador", icon: "icon1"))
 }

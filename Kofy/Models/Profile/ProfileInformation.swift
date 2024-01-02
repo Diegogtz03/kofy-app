@@ -11,7 +11,7 @@ struct ProfileInformation : Encodable, Decodable {
     var userId : Int
     var names : String
     var lastNames : String
-    var birthday: Date
+    var birthday: String
     var gender : String
     var profilePicture: Int
     var bloodType: String
@@ -20,7 +20,7 @@ struct ProfileInformation : Encodable, Decodable {
     var allergies: String
     var diseases: String
     
-    init(userId: Int, names: String, last_names: String, birthday: Date, gender: String, profile_picture: Int, blood_type: String, height: Int, weight: Float, allergies: String, diseases: String) {
+    init(userId: Int, names: String, last_names: String, birthday: String, gender: String, profile_picture: Int, blood_type: String, height: Int, weight: Float, allergies: String, diseases: String) {
         self.userId = userId
         self.names = names
         self.lastNames = last_names
@@ -38,7 +38,7 @@ struct ProfileInformation : Encodable, Decodable {
         self.userId = -1
         self.names = ""
         self.lastNames = ""
-        self.birthday = Date()
+        self.birthday = ""
         self.gender = ""
         self.profilePicture = 0
         self.bloodType = ""

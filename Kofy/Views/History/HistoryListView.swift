@@ -6,19 +6,51 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HistoryListView: View {
+    @Environment(\.modelContext) var modelContext
+    @Query var history: [History]
+    
+    @EnvironmentObject var authInfo: VerificationViewModel
+    @EnvironmentObject var sessionInfo: SummariesViewModel
     @EnvironmentObject var profileInfo: ProfileViewModel
     @EnvironmentObject var historyVM : HistoryContentViewModel
     
-    var history: [HistoryContentModel]
-    var filteredHistory:[HistoryContentModel] {
+    @Binding var prescriptionViewIsShown: Bool
+    
+    var filteredHistory:[History] {
         history.filter { content in
-            (!filtersShown || content.description.lowercased().hasPrefix(searchText.lowercased()) || content.doctor.lowercased().hasPrefix(searchText.lowercased()))
+            let isToday = Calendar.current.isDateInToday(searchDate)
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let formattedDate = dateFormatter.string(from: searchDate)
+            let isDateMatch = (formattedDate == content.sessionDate)
+            
+            if (filtersShown) {
+                if isToday {
+                    // Filter only based on searchText if it's not empty
+                    if !searchText.isEmpty {
+                        let searchTextLowercased = searchText.lowercased()
+                        return content.sessionName.lowercased().contains(searchTextLowercased) ||
+                        content.sessionDoctor.lowercased().contains(searchTextLowercased)
+                    } else {
+                        return true // Return everything if searchText is empty
+                    }
+                } else {
+                    return isDateMatch &&
+                    (searchText.isEmpty ||
+                     content.sessionName.lowercased().contains(searchText.lowercased()) ||
+                     content.sessionDoctor.lowercased().contains(searchText.lowercased()))
+                }
+            } else {
+                return true;
+            }
         }
     }
     
-    @State var shown = false
+    @Binding var shown: Bool
     @State var currentNamespace = Namespace().wrappedValue
     @State var selectedCard = 0
     
@@ -30,7 +62,7 @@ struct HistoryListView: View {
     @State private var searchText = ""
     @State private var searchDate = Date()
     @State private var filtersShown = false
-    @State private var disabledTouch = false
+    @Binding var disabledTouch: Bool
     
     var body: some View {
         GeometryReader { geometry in
@@ -55,6 +87,7 @@ struct HistoryListView: View {
                                         withAnimation(Animation.easeInOut(duration: 0.3)) {
                                             filtersShown.toggle()
                                             searchText = ""
+                                            searchDate = Date()
                                         }
                                     } label: {
                                         Image(systemName: "line.3.horizontal.decrease.circle.fill")
@@ -122,21 +155,35 @@ struct HistoryListView: View {
                 }
                 
                 if (shown) {
-                    HistoryView(namespace: cardNamespaces[selectedCard], shown: $shown, disabledTouch: $disabledTouch, content: filteredHistory[selectedCard])
+                    HistoryView(namespace: cardNamespaces[selectedCard], shown: $shown, disabledTouch: $disabledTouch, content: filteredHistory[selectedCard], prescriptionViewIsShown: $prescriptionViewIsShown)
+                        .environmentObject(authInfo)
+                        .environmentObject(sessionInfo)
+                        .environmentObject(profileInfo)
+                        .environment(\.modelContext, modelContext)
+                        .onAppear {
+                            if (filteredHistory[selectedCard].isProcessing && filteredHistory[selectedCard].summary.summaries.count == 0) {
+                                sessionInfo.validateSpeechSesssion(token: authInfo.userInfo.token, userId: authInfo.userInfo.userId, accessId: filteredHistory[selectedCard].accessId, content: filteredHistory[selectedCard])
+                            }
+                        }
                 }
             }
+            .padding([.bottom], 3)
             .ignoresSafeArea(.keyboard)
             .frame(width: geometry.size.width)
             .onAppear() {
-                for _ in 1...history.count {
+                for _ in 0...history.count {
                     let newNamespace = Namespace().wrappedValue
                     cardNamespaces.append(newNamespace)
                 }
             }
+            .onChange(of: history.count) { oldValue, newValue in
+                let newNamespace = Namespace().wrappedValue
+                cardNamespaces.append(newNamespace)
+            }
         }
     }
 }
-
-#Preview {
-    HistoryListView(history: [HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 1), HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 2), HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 3), HistoryContentModel(doctor: "Dra. Sandra", description: "Cita con dermatólogo", date: "3/10/2023", color: 4)])
-}
+//
+//#Preview {
+//    HistoryListView(history: [HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 1), HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 2), HistoryContentModel(doctor: "Dr. José Luis", description: "Cita con dermatólogo", date: "3/10/2023", color: 3), HistoryContentModel(doctor: "Dra. Sandra", description: "Cita con dermatólogo", date: "3/10/2023", color: 4)])
+//}
